@@ -252,7 +252,7 @@ int main(int argc, char *argv[])
 		//printSelectorString(@"getNextESAEventType:");
 		printSelectorString(@"getNextESAUpdateEvent:ESAID:ESAUpdate:");
 		//printSelectorString(@"SendCommand:ESAID:cmd:");
-		*/
+		
 		
 		droboCount = [proxy getESACount:proxy];
 		printf ("Number of drobos connected: %d\n", droboCount );
