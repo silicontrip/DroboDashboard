@@ -15,6 +15,7 @@
 
 #import "DDServer.h"
 #import "ESATMUpdate.h"
+#import "HumanReadableDataSizeHelper.h"
 
 NSAutoreleasePool  *pool;
 NSDistantObject *proxy;
@@ -123,13 +124,22 @@ int main(int argc, char *argv[])
 					
 					if([args boolForKey:@"df"]) {
 
-					
+				printf("%20s\t%s\t%s\t%s\t%s\n","Name","Total","Used","Free","Percent");	
+					if([args boolForKey:@"h"]) {
+						printf ("%20s\t%s\t%s\t%s\t%lld%%\n",[[esa getName] UTF8String],
+								[[HumanReadableDataSizeHelper humanReadableSizeFromBytes:[NSNumber numberWithLongLong:[esa getTotalCapacityProtected]]] UTF8String],
+								[[HumanReadableDataSizeHelper humanReadableSizeFromBytes:[NSNumber numberWithLongLong:[esa getUsedCapacityProtected]]] UTF8String],
+								[[HumanReadableDataSizeHelper humanReadableSizeFromBytes:[NSNumber numberWithLongLong:[esa getFreeCapacityProtected]]] UTF8String],
+
+								100*[esa getUsedCapacityProtected]/[esa getTotalCapacityProtected]);
+} else {
 						printf ("%s\t%lld\t%lld\t%lld\t%lld%%\n",[[esa getName] UTF8String],
 								[esa getTotalCapacityProtected],
 								[esa getUsedCapacityProtected],
 								[esa getFreeCapacityProtected],
 
 								100*[esa getUsedCapacityProtected]/[esa getTotalCapacityProtected]);
+}
 						exit(0);
 					}
 					
