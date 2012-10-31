@@ -36,9 +36,9 @@ int main(int argc, char *argv[])
 		printf ("-df df style capacity output\n");
 		printf("-v version information\n");
 		printf("-list list connected drobos\n");
-			   exit(0);
+		exit(0);
 	}
-
+	
 	
 	port = [[NSSocketPort alloc] initRemoteWithTCPPort:ddservicedPort host:@"localhost"];
 	
@@ -52,14 +52,14 @@ int main(int argc, char *argv[])
 	proxy = [[connection rootProxy] retain];
 	
 	dd = (DDServer *)proxy;
-
+	
 	// NSLog(@"%@",[proxy description]);
-		
+	
 	if ([dd subscribeClient:proxy] == 1) {
 		
 		int droboCount = [dd getESACount:proxy];
 		if([args boolForKey:@"list"]) {
-
+			
 			printf ("Number of drobos connected: %d\n", droboCount );
 			int index;
 			NSString *esaid;
@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
 				if ([dd getESAId:proxy ESAAtIndex:0 ESAID:&esaid]>0) {
 					
 					//	NSLog(@"getESAId: %d",rVal);
-						printf("%d: ID: %s\n",index,[esaid UTF8String]);
+					printf("%d: ID: %s\n",index,[esaid UTF8String]);
 				}
 			}
 			exit(0);
@@ -80,21 +80,21 @@ int main(int argc, char *argv[])
 			
 			if ([dd getESAId:proxy ESAAtIndex:0 ESAID:&esaid]>0) {
 				
-			//	NSLog(@"getESAId: %d",rVal);
-		//		NSLog(@"Drobo ID: %@",esaid);
+				//	NSLog(@"getESAId: %d",rVal);
+				//		NSLog(@"Drobo ID: %@",esaid);
 				
 				
 				[dd TMInit:proxy 
-			   simulationMode:0 
-			  PollingInterval:5 
-				 VerboseLevel:0 
-					 FileMode:0 
-		StartNetMonitorThread:0];
+			simulationMode:0 
+		   PollingInterval:5 
+			  VerboseLevel:0 
+				  FileMode:0 
+	 StartNetMonitorThread:0];
 				
 				[dd registerESAEventListener:proxy];
-
+				
 				int riVal;
-
+				
 				do {
 					// should probably sleep
 					riVal = [dd getNextESAEventType:proxy];
@@ -104,64 +104,74 @@ int main(int argc, char *argv[])
 				
 				if ([dd getNextESAUpdateEvent:proxy ESAID:&esaid ESAUpdate:&update]>0) 
 				{
-
-						ESATMUpdate *esa;
-						
-						esa = [[ESATMUpdate alloc] initWithString:update];
-						
+					
+					ESATMUpdate *esa;
+					
+					esa = [[ESATMUpdate alloc] initWithString:update];
+					
 					if ([args boolForKey:@"version"]) {
 						printf("ID:           %s\n",[[esa getESAID] UTF8String]);
 						printf("Serial:       %s\n",[[esa getSerial] UTF8String]);
 						printf("Name:         %s\n",[[esa getName] UTF8String]);
 						printf("Version:      %s\n",[[esa getVersion] UTF8String]);
 						printf("Release Date: %s\n",[[esa getReleaseDate] UTF8String]);
-
+						
 						printf("Architecture: %s\n",[[esa getArch] UTF8String]);
 						printf("Features:     %d\n",[esa getFirmwareFeatures]);
-
+						
 						exit(0);
 					}
 					
 					if([args boolForKey:@"df"]) {
-
-				printf("%20s\t%s\t%s\t%s\t%s\n","Name","Total","Used","Free","Percent");	
-					if([args boolForKey:@"h"]) {
-						printf ("%20s\t%s\t%s\t%s\t%lld%%\n",[[esa getName] UTF8String],
-								[[HumanReadableDataSizeHelper humanReadableSizeFromBytes:[NSNumber numberWithLongLong:[esa getTotalCapacityProtected]]] UTF8String],
-								[[HumanReadableDataSizeHelper humanReadableSizeFromBytes:[NSNumber numberWithLongLong:[esa getUsedCapacityProtected]]] UTF8String],
-								[[HumanReadableDataSizeHelper humanReadableSizeFromBytes:[NSNumber numberWithLongLong:[esa getFreeCapacityProtected]]] UTF8String],
-
-								100*[esa getUsedCapacityProtected]/[esa getTotalCapacityProtected]);
-} else {
-						printf ("%s\t%lld\t%lld\t%lld\t%lld%%\n",[[esa getName] UTF8String],
-								[esa getTotalCapacityProtected],
-								[esa getUsedCapacityProtected],
-								[esa getFreeCapacityProtected],
-
-								100*[esa getUsedCapacityProtected]/[esa getTotalCapacityProtected]);
-}
+						
+						printf("%20s\t%s\t%s\t%s\t%s\n","Name","Total","Used","Free","Percent");	
+						if([args boolForKey:@"h"]) {
+							printf ("%20s\t%s\t%s\t%s\t%lld%%\n",[[esa getName] UTF8String],
+									[[HumanReadableDataSizeHelper humanReadableSizeFromBytes:[NSNumber numberWithLongLong:[esa getTotalCapacityProtected]]] UTF8String],
+									[[HumanReadableDataSizeHelper humanReadableSizeFromBytes:[NSNumber numberWithLongLong:[esa getUsedCapacityProtected]]] UTF8String],
+									[[HumanReadableDataSizeHelper humanReadableSizeFromBytes:[NSNumber numberWithLongLong:[esa getFreeCapacityProtected]]] UTF8String],
+									
+									100*[esa getUsedCapacityProtected]/[esa getTotalCapacityProtected]);
+						} else {
+							printf ("%20s\t%lld\t%lld\t%lld\t%lld%%\n",[[esa getName] UTF8String],
+									[esa getTotalCapacityProtected],
+									[esa getUsedCapacityProtected],
+									[esa getFreeCapacityProtected],
+									
+									100*[esa getUsedCapacityProtected]/[esa getTotalCapacityProtected]);
+						}
 						exit(0);
 					}
 					
 					if ([args boolForKey:@"disks"])
 					{
-					
+						
 						int disks = [esa getSlotCountExp];
 						printf("Number of Disks: %d\n",disks);
 						int slot;
 						for (slot=0; slot < disks; slot++)
 						{
-						
-							printf("Disk: %d size: %lld status: %d\n",slot,[esa getPhysicalCapacityAtSlot:slot], [esa getStatusAtSlot:slot]);
-							
+							if([args boolForKey:@"h"]) {
+								printf("Disk: %d size: %s status: %d\n",slot,
+									   [
+										[HumanReadableDataSizeHelper humanReadableSizeFromBytes:
+										 [NSNumber numberWithLongLong:
+										  [esa getPhysicalCapacityAtSlot:slot]
+										  ]
+										 ] 
+										UTF8String],
+									   [esa getStatusAtSlot:slot]);
+							} else {
+								printf("Disk: %d size: %lld status: %d\n",slot,[esa getPhysicalCapacityAtSlot:slot], [esa getStatusAtSlot:slot]);
+							}
 						}
-
+						
 						
 					}
 					
 					if([args boolForKey:@"xpath"]) {
 						NSError *errorString;
-
+						
 						NSXMLDocument *xmlDoc = [[NSXMLDocument alloc] initWithXMLString:update
 																				 options:0
 																				   error:&errorString];
@@ -170,19 +180,21 @@ int main(int argc, char *argv[])
 							NSLog(@"Name: %@=%@",[aNode XPath],[aNode objectValue]);
 						}
 					}
-						
-						
-					} else {
-						NSLog(@"Error Parsing response");
-					}
 					
 					
-					//	NSLog(@"getNextESAUpdateEvent: %d",riVal);
-					//	NSLog (@"getNextESAUpdateEvent:%@",update);
+				} else {
+					NSLog(@"Error Parsing response");
 				}
+				
+				
+				//	NSLog(@"getNextESAUpdateEvent: %d",riVal);
+				//	NSLog (@"getNextESAUpdateEvent:%@",update);
 			}
+		} else {
+			NSLog(@"No Drobos Detected.");
 		}
-		//		[proxy unsubscribeClient:@"drobodash"];
+	}
+	//		[proxy unsubscribeClient:@"drobodash"];
 	
 	
 	[pool release];
