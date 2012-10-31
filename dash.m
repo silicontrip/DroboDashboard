@@ -238,20 +238,20 @@ int main(int argc, char *argv[])
 
 	
 
-		/*
-		printSelectorString(@"getESACount:");
-		printSelectorString(@"getESAId:ESAAtIndex:ESAID:");
-		printSelectorString(@"dumpStatusInfo:ESAID:statusInfo:");
-		printSelectorString(@"dumpCapacityInfo:ESAID:capacityInfo:");
-		printSelectorString(@"dumpSlotInfo:ESAID:arraySlotData:");
-		printSelectorString(@"dumpLUNInfo:ESAID:arrayLUNData:");
+		
+		//printSelectorString(@"getESACount:");
+		//printSelectorString(@"getESAId:ESAAtIndex:ESAID:");
+		//printSelectorString(@"dumpStatusInfo:ESAID:statusInfo:");
+		//printSelectorString(@"dumpCapacityInfo:ESAID:capacityInfo:");
+		//printSelectorString(@"dumpSlotInfo:ESAID:arraySlotData:");
+		//printSelectorString(@"dumpLUNInfo:ESAID:arrayLUNData:");
 		
 		printSelectorString(@"TMInit:simulationMode:PollingInterval:VerboseLevel:FileMode:StartNetMonitorThread:");
-		printSelectorString(@"SendCommand:ESAID:cmd:");
+		//printSelectorString(@"SendCommand:ESAID:cmd:");
 		printSelectorString(@"registerESAEventListener:");
-		printSelectorString(@"getNextESAEventType:");
+		//printSelectorString(@"getNextESAEventType:");
 		printSelectorString(@"getNextESAUpdateEvent:ESAID:ESAUpdate:");
-		printSelectorString(@"SendCommand:ESAID:cmd:");
+		//printSelectorString(@"SendCommand:ESAID:cmd:");
 		*/
 		
 		droboCount = [proxy getESACount:proxy];
@@ -265,15 +265,15 @@ int main(int argc, char *argv[])
 		rVal = [proxy getESAId:proxy ESAAtIndex:0 ESAID:&esaid];
 		
 		// NSLog(@"getESAId: %d",rVal);
-		NSLog(@"Drobo ID: %@",esaid);
+	//	NSLog(@"Drobo ID: %@",esaid);
 
 		riVal = [proxy dumpStatusInfo:proxy ESAID:esaid statusInfo:&sInfo];
 		
-		NSLog(@"Status info: %d %d %d",sInfo.v1, sInfo.v2, sInfo.v3);
+	//	NSLog(@"Status info: %d %d %d",sInfo.v1, sInfo.v2, sInfo.v3);
 		
 		riVal = [proxy dumpCapacityInfo:proxy ESAID:esaid capacityInfo:&cInfo];
 		
-		NSLog(@"Capacity info: %lu %lu %lu %lu",cInfo.v1, cInfo.v2, cInfo.v3, cInfo.v4);
+	//	NSLog(@"Capacity info: %lu %lu %lu %lu",cInfo.v1, cInfo.v2, cInfo.v3, cInfo.v4);
 
 	//	riVal = [proxy dumpSlotInfo:proxy ESAID:esaid arraySlotData:&command];  // contains drive model numbers
 		// NSLog(@"slot info: %@",command);
@@ -285,7 +285,7 @@ int main(int argc, char *argv[])
 	//	NSLog(@"lun info: %@",command);
 			
 			riVal=[proxy dumpDiskPackInfo:proxy ESAID:esaid diskPackData:&command];
-			NSLog(@"diskpack info: %@",command);
+	//		NSLog(@"diskpack info: %@",command);
 
 
 		}
