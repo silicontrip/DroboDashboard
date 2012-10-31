@@ -1,99 +1,97 @@
-2012-01-28 00:05:41.204 DroboXML[39739:10b] <DDServer: 0x405d40>
-2012-01-28 00:05:47.233 DroboXML[39739:10b] ID: 0db104921655 Update: <?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <ESATMUpdate>
-<mESAUpdateSignature>ESAINFO</mESAUpdateSignature>
-<mESAUpdateVersion>1</mESAUpdateVersion>
-<mESAUpdateSize>16148</mESAUpdateSize>
-<mESAID>0db104921655</mESAID>
-<mSerial>0DB104921655</mSerial>
-<mName>Drobo disk pack</mName>
-<mVersion>1.3.7 [1.254.30359]</mVersion>
-<mReleaseDate>Jul 22 2010,17:28:26</mReleaseDate>
-<mArch>ArmMarvell      </mArch>
-<mFirmwareFeatures>274431</mFirmwareFeatures>
-<mFirmwareTestFeatures>3</mFirmwareTestFeatures>
-<mFirmwareTestState>0</mFirmwareTestState>
-<mFirmwareTestValue>1</mFirmwareTestValue>
-<mStatus>98880</mStatus>
-<mRelayoutCount>1091</mRelayoutCount>
-<mTotalCapacityProtected>2785679769600</mTotalCapacityProtected>
-<mUsedCapacityProtected>2346416611328</mUsedCapacityProtected>
-<mFreeCapacityProtected>439263158272</mFreeCapacityProtected>
-<mTotalCapacityUnprotected>0</mTotalCapacityUnprotected>
-<mUsedCapacityOS>2323164807168</mUsedCapacityOS>
-<mYellowThreshold>8500</mYellowThreshold>
-<mRedThreshold>9500</mRedThreshold>
-<mUseUnprotectedCapacity>0</mUseUnprotectedCapacity>
-<mRealTimeIntegrityChecking>0</mRealTimeIntegrityChecking>
-<mStoredFirmwareTestState>0</mStoredFirmwareTestState>
-<mStoredFirmwareTestValue>1</mStoredFirmwareTestValue>
-<mDiskPackID>0</mDiskPackID>
-<mDroboName>Drobo disk pack</mDroboName>
-<mConnectionType>2</mConnectionType>
-<mSlotCountExp>4</mSlotCountExp>
-<mSlotsExp>
-<n0>
-<mSlotNumber>0</mSlotNumber>
-<mStatus>4</mStatus>
-<mESAID></mESAID>
-<mMake></mMake>
-<mModel></mModel>
-<mPhysicalCapacity>2000398934016</mPhysicalCapacity>
-</n0>
-<n1>
-<mSlotNumber>1</mSlotNumber>
-<mStatus>4</mStatus>
-<mESAID></mESAID>
-<mMake></mMake>
-<mModel></mModel>
-<mPhysicalCapacity>320072933376</mPhysicalCapacity>
-</n1>
-<n2>
-<mSlotNumber>2</mSlotNumber>
-<mStatus>4</mStatus>
-<mESAID></mESAID>
-<mMake></mMake>
-<mModel></mModel>
-<mPhysicalCapacity>500107862016</mPhysicalCapacity>
-</n2>
-<n3>
-<mSlotNumber>3</mSlotNumber>
-<mStatus>4</mStatus>
-<mESAID></mESAID>
-<mMake></mMake>
-<mModel></mModel>
-<mPhysicalCapacity>2000398934016</mPhysicalCapacity>
-</n3>
-</mSlotsExp>
-<mLUNUpdates>
-<n0>
-<mLUN>0</mLUN>
-<mUniqueLUNID>0</mUniqueLUNID>
-<mTargetName></mTargetName>
-<mLUNName>Drobo</mLUNName>
-<mMaximumLUNSize>17592186044416</mMaximumLUNSize>
-<mUsedCapacityOS>2323164807168</mUsedCapacityOS>
-<mFlags>2</mFlags>
-<mPartitionCount>128</mPartitionCount>
-<mPartitionType>3</mPartitionType>
-<mPartitionFormat>4</mPartitionFormat>
-<mShareState>0</mShareState>
-<mNextAvailableID>0</mNextAvailableID>
-<mUsedCapacityOS>2323164807168</mUsedCapacityOS>
-<mInitiatorCount>0</mInitiatorCount>
-<mLoggedIn>1</mLoggedIn>
-</n0>
-</mLUNUpdates>
-<mFirmwareFeatureStates>0</mFirmwareFeatureStates>
-<mLUNCount>1</mLUNCount>
-<mMaxLUNs>8</mMaxLUNs>
-<mSledName></mSledName>
-<mSledVersion></mSledVersion>
-<mShareCount>0</mShareCount>
-<mShareInfo>
+  <mESAUpdateSignature>ESAINFO</mESAUpdateSignature>
+  <mESAUpdateVersion>1</mESAUpdateVersion>
+  <mESAUpdateSize>16148</mESAUpdateSize>
+  <mESAID>0db104921655</mESAID>
+  <mSerial>0DB104921655</mSerial>
+  <mName>Drobo disk pack</mName>
+  <mVersion>1.3.7 [1.254.30359]</mVersion>
+  <mReleaseDate>Jul 22 2010,17:28:26</mReleaseDate>
+  <mArch>ArmMarvell      </mArch>
+  <mFirmwareFeatures>274431</mFirmwareFeatures>
+  <mFirmwareTestFeatures>3</mFirmwareTestFeatures>
+  <mFirmwareTestState>0</mFirmwareTestState>
+  <mFirmwareTestValue>1</mFirmwareTestValue>
+  <mStatus>98880</mStatus>
+  <mRelayoutCount>1091</mRelayoutCount>
+  <mTotalCapacityProtected>2785679769600</mTotalCapacityProtected>
+  <mUsedCapacityProtected>2346416611328</mUsedCapacityProtected>
+  <mFreeCapacityProtected>439263158272</mFreeCapacityProtected>
+  <mTotalCapacityUnprotected>0</mTotalCapacityUnprotected>
+  <mUsedCapacityOS>2323164807168</mUsedCapacityOS>
+  <mYellowThreshold>8500</mYellowThreshold>
+  <mRedThreshold>9500</mRedThreshold>
+  <mUseUnprotectedCapacity>0</mUseUnprotectedCapacity>
+  <mRealTimeIntegrityChecking>0</mRealTimeIntegrityChecking>
+  <mStoredFirmwareTestState>0</mStoredFirmwareTestState>
+  <mStoredFirmwareTestValue>1</mStoredFirmwareTestValue>
+  <mDiskPackID>0</mDiskPackID>
+  <mDroboName>Drobo disk pack</mDroboName>
+  <mConnectionType>2</mConnectionType>
+  <mSlotCountExp>4</mSlotCountExp>
+  <mSlotsExp>
+    <n0>
+      <mSlotNumber>0</mSlotNumber>
+      <mStatus>4</mStatus>
+      <mESAID/>
+      <mMake/>
+      <mModel/>
+      <mPhysicalCapacity>2000398934016</mPhysicalCapacity>
+    </n0>
+    <n1>
+      <mSlotNumber>1</mSlotNumber>
+      <mStatus>4</mStatus>
+      <mESAID/>
+      <mMake/>
+      <mModel/>
+      <mPhysicalCapacity>320072933376</mPhysicalCapacity>
+    </n1>
+    <n2>
+      <mSlotNumber>2</mSlotNumber>
+      <mStatus>4</mStatus>
+      <mESAID/>
+      <mMake/>
+      <mModel/>
+      <mPhysicalCapacity>500107862016</mPhysicalCapacity>
+    </n2>
+    <n3>
+      <mSlotNumber>3</mSlotNumber>
+      <mStatus>4</mStatus>
+      <mESAID/>
+      <mMake/>
+      <mModel/>
+      <mPhysicalCapacity>2000398934016</mPhysicalCapacity>
+    </n3>
+  </mSlotsExp>
+  <mLUNUpdates>
+    <n0>
+      <mLUN>0</mLUN>
+      <mUniqueLUNID>0</mUniqueLUNID>
+      <mTargetName/>
+      <mLUNName>Drobo</mLUNName>
+      <mMaximumLUNSize>17592186044416</mMaximumLUNSize>
+      <mUsedCapacityOS>2323164807168</mUsedCapacityOS>
+      <mFlags>2</mFlags>
+      <mPartitionCount>128</mPartitionCount>
+      <mPartitionType>3</mPartitionType>
+      <mPartitionFormat>4</mPartitionFormat>
+      <mShareState>0</mShareState>
+      <mNextAvailableID>0</mNextAvailableID>
+      <mUsedCapacityOS>2323164807168</mUsedCapacityOS>
+      <mInitiatorCount>0</mInitiatorCount>
+      <mLoggedIn>1</mLoggedIn>
+    </n0>
+  </mLUNUpdates>
+  <mFirmwareFeatureStates>0</mFirmwareFeatureStates>
+  <mLUNCount>1</mLUNCount>
+  <mMaxLUNs>8</mMaxLUNs>
+  <mSledName/>
+  <mSledVersion/>
+  <mShareCount>0</mShareCount>
+  <mShareInfo>
 </mShareInfo>
-<mSledStatus>0</mSledStatus>
-<mSledSerial></mSledSerial>
-<mDiskPackStatus>0</mDiskPackStatus>
+  <mSledStatus>0</mSledStatus>
+  <mSledSerial/>
+  <mDiskPackStatus>0</mDiskPackStatus>
 </ESATMUpdate>
-Number of drobos connected: 1

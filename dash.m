@@ -325,7 +325,7 @@ int main(int argc, char *argv[])
 						long long freeLong = [[[free objectAtIndex:0] stringValue] longLongValue];
 
 						
-						printf ("%s\t%s\t%s\t%s\t%lld\n",[[[name objectAtIndex:0] stringValue] UTF8String],
+						printf ("%s\t%s\t%s\t%s\t%lld%%\n",[[[name objectAtIndex:0] stringValue] UTF8String],
 								[[[total objectAtIndex:0] stringValue] UTF8String],
 								[[[used objectAtIndex:0] stringValue] UTF8String],
 								[[[free objectAtIndex:0] stringValue] UTF8String], 
