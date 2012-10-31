@@ -35,11 +35,53 @@
 }
 -(int)getLUNCount { return [[[[[xmlDoc rootElement] nodesForXPath:@"/ESATMUpdate[1]/mLUNCount[1]" error:&errorString] objectAtIndex:0] stringValue] intValue];}
 -(int)getMaxLUNs { return [[[[[xmlDoc rootElement] nodesForXPath:@"/ESATMUpdate[1]/mMaxLUNs[1]" error:&errorString] objectAtIndex:0] stringValue] intValue];}
--(long long)getMaximumLUNSizeAtLUN:(int)lun {;}
--(long long)getUsedCapacityOSAtLUN:(int)lun {;}
--(int)getPartitionCountAtLUN:(int)lun {;}
--(int)getPartitionTypeAtLUN:(int)lun {;}
--(int)getPartitionFormatAtLUN:(int)lun {;}
+-(long long)getMaximumLUNSizeAtLUN:(int)lun {
+	return [[[[[xmlDoc rootElement] 
+			   nodesForXPath:[NSString 
+							  stringWithFormat:@"/ESATMUpdate[1]/mLUNUpdates[1]/n%d[1]/mMaximumLUNSize[1]",lun] 
+			   error:&errorString] 
+			  objectAtIndex:0] 
+			 stringValue] 
+			longLongValue];	
+	
+}
+-(long long)getUsedCapacityOSAtLUN:(int)lun {
+	return [[[[[xmlDoc rootElement] 
+			   nodesForXPath:[NSString 
+							  stringWithFormat:@"/ESATMUpdate[1]/mLUNUpdates[1]/n%d[1]/mUsedCapacityOS[1]",lun] 
+			   error:&errorString] 
+			  objectAtIndex:0] 
+			 stringValue] 
+			longLongValue];	
+}
+-(int)getPartitionCountAtLUN:(int)lun {
+	return [[[[[xmlDoc rootElement] 
+			   nodesForXPath:[NSString 
+							  stringWithFormat:@"/ESATMUpdate[1]/mLUNUpdates[1]/n%d[1]/mPartitionCount[1]",lun] 
+			   error:&errorString] 
+			  objectAtIndex:0] 
+			 stringValue] 
+			intValue];	
+}
+-(int)getPartitionTypeAtLUN:(int)lun {	
+	return [[[[[xmlDoc rootElement] 
+			   nodesForXPath:[NSString 
+							  stringWithFormat:@"/ESATMUpdate[1]/mLUNUpdates[1]/n%d[1]/mPartitionType[1]",lun] 
+			   error:&errorString] 
+			  objectAtIndex:0] 
+			 stringValue] 
+			intValue];	
+}
+-(int)getPartitionFormatAtLUN:(int)lun {
+	return [[[[[xmlDoc rootElement] 
+			   nodesForXPath:[NSString 
+							  stringWithFormat:@"/ESATMUpdate[1]/mLUNUpdates[1]/n%d[1]/mPartitionFormat[1]",lun] 
+			   error:&errorString] 
+			  objectAtIndex:0] 
+			 stringValue] 
+			intValue];	
+	
+}
 
 -(int)getSledStatus { return [[[[[xmlDoc rootElement] nodesForXPath:@"/ESATMUpdate[1]/mSledStatus[1]" error:&errorString] objectAtIndex:0] stringValue] intValue];}
 -(int)getDiskPackStatus { return [[[[[xmlDoc rootElement] nodesForXPath:@"/ESATMUpdate[1]/mDiskPackStatus[1]" error:&errorString] objectAtIndex:0] stringValue] intValue];}
