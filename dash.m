@@ -110,14 +110,14 @@ int main(int argc, char *argv[])
 						esa = [[ESATMUpdate alloc] initWithString:update];
 						
 					if ([args boolForKey:@"version"]) {
-						printf("Drobo ID:           %s\n",[[esa getESAID] UTF8String]);
-						printf("Drobo Serial:       %s\n",[[esa getSerial] UTF8String]);
-						printf("Drobo Name:         %s\n",[[esa getName] UTF8String]);
-						printf("Drobo Serial:       %s\n",[[esa getVersion] UTF8String]);
-						printf("Drobo Release Date: %s\n",[[esa getReleaseDate] UTF8String]);
+						printf("ID:           %s\n",[[esa getESAID] UTF8String]);
+						printf("Serial:       %s\n",[[esa getSerial] UTF8String]);
+						printf("Name:         %s\n",[[esa getName] UTF8String]);
+						printf("Version:      %s\n",[[esa getVersion] UTF8String]);
+						printf("Release Date: %s\n",[[esa getReleaseDate] UTF8String]);
 
-						printf("Drobo Architecture: %s\n",[[esa getArch] UTF8String]);
-						printf("Drobo Features:     %d\n",[esa getFirmwareFeatures]);
+						printf("Architecture: %s\n",[[esa getArch] UTF8String]);
+						printf("Features:     %d\n",[esa getFirmwareFeatures]);
 
 						exit(0);
 					}
