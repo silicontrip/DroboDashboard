@@ -30,7 +30,7 @@
 -(NSString *)getDroboName;
 -(int)getSlotCountExp;
 -(int)getStatusAtSlot:(int)slot;
--(int)getPhysicalCapacityAtSlot:(int)slot;
+-(long long)getPhysicalCapacityAtSlot:(int)slot;
 
 -(int)getLUNCount;
 -(int)getMaxLUNs;
