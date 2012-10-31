@@ -8,6 +8,7 @@
 	xmlDoc = [[NSXMLDocument alloc] initWithXMLString:update
 											  options:0
 												error:&errorString];
+	return self;
 }
 -(NSString *)getESAID { return [[[[xmlDoc rootElement] nodesForXPath:@"/ESATMUpdate[1]/mESAID[1]" error:&errorString] objectAtIndex:0] stringValue];}
 -(NSString *)getSerial { return [[[[xmlDoc rootElement] nodesForXPath:@"/ESATMUpdate[1]/mSerial[1]" error:&errorString] objectAtIndex:0] stringValue];}
