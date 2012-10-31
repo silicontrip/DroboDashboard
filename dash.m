@@ -11,6 +11,7 @@
 #import <Foundation/NSPortNameServer.h>
 #import <Foundation/Foundation.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSXMLElement.h>
 #import <objc/runtime.h>
 
 #import "DDServer.h"
@@ -29,100 +30,103 @@ char *typeDecoding (const char *code) {
 	
 	for (index=0; index < strlen(code); index++) {
 		
+		if (index > 0)
+			strcat(decode," ");
+		
 		switch (code[index]) {
 				
 			case 'c':
-				strcat(decode,"char ");	
+				strcat(decode,"char");	
 				break;
 				
 			case 'i':
-				strcat(decode,"int ");	
+				strcat(decode,"int");	
 				break;
 				
 			case 's':
-				strcat(decode,"short ");	
+				strcat(decode,"short");	
 				break;
 				
 			case 'l':
-				strcat(decode,"long ");	
+				strcat(decode,"long");	
 				break;
 				
 			case 'q':
-				strcat(decode,"longlong ");	
+				strcat(decode,"longlong");	
 				break;
 				
 			case 'C':
-				strcat(decode,"unsignedchar ");	
+				strcat(decode,"unsignedchar");	
 				break;
 				
 			case 'I':
-				strcat(decode,"unsignedint ");	
+				strcat(decode,"unsignedint");	
 				break;
 				
 			case 'S':
-				strcat(decode,"unsignedshort ");	
+				strcat(decode,"unsignedshort");	
 				break;
 			case 'L':
-				strcat(decode,"unsignedlong ");	
+				strcat(decode,"unsignedlong");	
 				break;
 			case 'Q':
-				strcat(decode,"unsignedlonglong ");	
+				strcat(decode,"unsignedlonglong");	
 				break;
 				
 			case 'f':
-				strcat(decode,"float ");	
+				strcat(decode,"float");
 				break;
 				
 			case 'd':
-				strcat(decode,"double ");	
+				strcat(decode,"double");	
 				break;
 				
 			case 'B':
-				strcat(decode,"bool ");	
+				strcat(decode,"bool");	
 				break;
 				
 			case 'v':
-				strcat(decode,"void ");	
+				strcat(decode,"void");	
 				break;
 				
 			case '*':
-				strcat(decode,"char* ");	
+				strcat(decode,"char*");	
 				break;
 				
 			case '@':
-				strcat(decode,"Object ");	
+				strcat(decode,"*Object");	
 				break;
 			case '#':
-				strcat(decode,"Class ");	
+				strcat(decode,"Class");	
 				break;
 				
 			case ':':
-				strcat(decode,"Selector ");	
+				strcat(decode,"Selector");	
 				break;
 				
 			case '[':
 				strcat(decode,"array[");	
 				break;
 			case ']':
-				strcat(decode,"] ");	
+				strcat(decode,"]");	
 				break;
 				
 			case '{':
 				strcat(decode,"struct{");	
 				break;
 			case '}':
-				strcat(decode,"} ");	
+				strcat(decode,"}");	
 				break;
 				
 			case '(':
-				strcat(decode,"union( ");	
+				strcat(decode,"union(");	
 				break;
 			case ')':
-				strcat(decode,") ");	
+				strcat(decode,")");	
 				break;
 				
 			case 'b':
-				strcat(decode,"bits ");	
+				strcat(decode,"bits");	
 				break;
 				
 			case '^':
@@ -130,39 +134,38 @@ char *typeDecoding (const char *code) {
 				break;
 				
 			case '?':
-				strcat(decode,"unknown ");	
+				strcat(decode,"unknown");	
 				break;
 				
 			case 'r':
-				strcat(decode,"const ");	
+				strcat(decode,"const");	
 				break;
 				
 			case 'n':
-				strcat(decode,"in ");	
+				strcat(decode,"in");	
 				break;
 				
 			case 'N':
-				strcat(decode,"inout ");	
+				strcat(decode,"inout");	
 				break;
 				
 			case 'o':
-				strcat(decode,"out ");	
+				strcat(decode,"out");	
 				break;
 				
 			case 'O':
-				strcat(decode,"bycopy ");	
+				strcat(decode,"bycopy");	
 				break;
 				
 			case 'R':
-				strcat(decode,"byref ");	
+				strcat(decode,"byref");	
 				break;
 				
 			case 'V':
-				strcat(decode,"oneway ");	
+				strcat(decode,"oneway");	
 				break;
 				
 			default:
-				
 				break;
 				
 		}
@@ -248,24 +251,23 @@ int main(int argc, char *argv[])
 		
 		int riVal;
 		
-		printSelectorString(@"subscribeClient:");
-		printSelectorString(@"getESACount:");
-		printSelectorString(@"getESAId:ESAAtIndex:ESAID:");
-		printSelectorString(@"dumpStatusInfo:ESAID:statusInfo:");
-		printSelectorString(@"dumpCapacityInfo:ESAID:capacityInfo:");
-		printSelectorString(@"dumpSlotInfo:ESAID:arraySlotData:");
-		printSelectorString(@"dumpLUNInfo:ESAID:arrayLUNData:");
+		//printSelectorString(@"subscribeClient:");
+		//printSelectorString(@"getESACount:");
+		//printSelectorString(@"getESAId:ESAAtIndex:ESAID:");
+		//printSelectorString(@"dumpStatusInfo:ESAID:statusInfo:");
+		//printSelectorString(@"dumpCapacityInfo:ESAID:capacityInfo:");
+		//printSelectorString(@"dumpSlotInfo:ESAID:arraySlotData:");
+		//printSelectorString(@"dumpLUNInfo:ESAID:arrayLUNData:");
 		
-		printSelectorString(@"TMInit:simulationMode:PollingInterval:VerboseLevel:FileMode:StartNetMonitorThread:");
-		printSelectorString(@"SendCommand:ESAID:cmd:");
-		printSelectorString(@"registerESAEventListener:");
-		printSelectorString(@"getNextESAEventType:");
-		printSelectorString(@"getNextESAUpdateEvent:ESAID:ESAUpdate:");
-		printSelectorString(@"SendCommand:ESAID:cmd:");
+		//printSelectorString(@"TMInit:simulationMode:PollingInterval:VerboseLevel:FileMode:StartNetMonitorThread:");
+		//printSelectorString(@"SendCommand:ESAID:cmd:");
+		//printSelectorString(@"registerESAEventListener:");
+		//printSelectorString(@"getNextESAEventType:");
+		//printSelectorString(@"getNextESAUpdateEvent:ESAID:ESAUpdate:");
 		
 		
 		droboCount = [dd getESACount:proxy];
-		printf ("Number of drobos connected: %d\n", droboCount );
+	//	printf ("Number of drobos connected: %d\n", droboCount );
 		
 		if (droboCount > 0) {
 			esaid = [[NSString alloc] init];
@@ -274,8 +276,8 @@ int main(int argc, char *argv[])
 			
 			if ([dd getESAId:proxy ESAAtIndex:0 ESAID:&esaid]>0) {
 				
-				NSLog(@"getESAId: %d",rVal);
-				NSLog(@"Drobo ID: %@",esaid);
+			//	NSLog(@"getESAId: %d",rVal);
+		//		NSLog(@"Drobo ID: %@",esaid);
 				
 				
 				[dd TMInit:proxy 
@@ -290,7 +292,6 @@ int main(int argc, char *argv[])
 				do {
 					// should probably sleep
 					riVal = [dd getNextESAEventType:proxy];
-					// NSLog(@"getNextESAUpdateEventType: %d",riVal);
 				} while (riVal != 1);
 				
 				NSString *update;			
@@ -298,17 +299,60 @@ int main(int argc, char *argv[])
 				if ([dd getNextESAUpdateEvent:proxy ESAID:&esaid ESAUpdate:&update]>0) 
 				{
 
-					NSLog(@"buffer length: %d",[update length]);
+					//NSLog(@"buffer length: %d",[update length]);
 
 					NSError *errorString;
-					NSXMLDocument *xml ;
+					NSXMLDocument *xmlDoc ;
 					
-					xml = [[NSXMLDocument alloc] initWithXMLString:update
-														 options:0
-														   error:&errorString];
+					xmlDoc = [[NSXMLDocument alloc] initWithXMLString:update
+														   options:0
+															 error:&errorString];
 					
-					if (xml == nil) 
+					if (xmlDoc != nil) 
+					{
+					
+						NSXMLNode *aNode = [xmlDoc rootElement];
+						
+						
+						NSArray *name  = [aNode nodesForXPath:@"/ESATMUpdate[1]/mName[1]" error:&errorString];
+						NSArray *total = [aNode nodesForXPath:@"/ESATMUpdate[1]/mTotalCapacityProtected[1]" error:&errorString];
+						NSArray *used = [aNode nodesForXPath:@"/ESATMUpdate[1]/mUsedCapacityProtected[1]" error:&errorString];
+						NSArray *free = [aNode nodesForXPath:@"/ESATMUpdate[1]/mFreeCapacityProtected[1]" error:&errorString];
+
+						long long totalLong = [[[total objectAtIndex:0] stringValue] longLongValue];
+						
+						long long usedLong = [[[used objectAtIndex:0] stringValue] longLongValue];
+						long long freeLong = [[[free objectAtIndex:0] stringValue] longLongValue];
+
+						
+						printf ("%s\t%s\t%s\t%s\t%lld\n",[[[name objectAtIndex:0] stringValue] UTF8String],
+								[[[total objectAtIndex:0] stringValue] UTF8String],
+								[[[used objectAtIndex:0] stringValue] UTF8String],
+								[[[free objectAtIndex:0] stringValue] UTF8String], 
+								100*usedLong/totalLong);
+							
+						
+						while (aNode = [aNode nextNode]) {
+							
+							//NSLog(@"node: %@",[aNode stringValue]);
+							
+
+
+							NSLog(@"Name: %@=%@",[aNode XPath],[aNode objectValue]);
+							
+							/*
+							 if (kind == NSXMLTextKind) {
+							 NSLog(@"Text: %@",[aNode objectValue]);
+							 }
+							 */
+						}
+						
+						
+						
+					} else {
 						NSLog(@"Error Parsing response");
+					}
+					
 					
 					//	NSLog(@"getNextESAUpdateEvent: %d",riVal);
 					//	NSLog (@"getNextESAUpdateEvent:%@",update);
