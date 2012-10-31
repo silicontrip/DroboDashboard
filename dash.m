@@ -15,6 +15,7 @@
 #import <objc/runtime.h>
 
 #import "DDServer.h"
+#import "ESATMUpdate.h"
 
 NSAutoreleasePool  *pool;
 NSDistantObject *proxy;
@@ -299,54 +300,21 @@ int main(int argc, char *argv[])
 				if ([dd getNextESAUpdateEvent:proxy ESAID:&esaid ESAUpdate:&update]>0) 
 				{
 
-					//NSLog(@"buffer length: %d",[update length]);
+						ESATMUpdate *esa;
+						
+					esa = [[ESATMUpdate alloc] initWithXMLString:update];
+						
+						printf ("%s\t%lld\t%lld\t%lld\t%lld%%\n",[[esa getName] UTF8String],
+								[esa getTotalCapacityProtected],
+								[esa getUsedCapacityProtected],
+								[esa getFreeCapacityProtected],
 
-					NSError *errorString;
-					NSXMLDocument *xmlDoc ;
-					
-					xmlDoc = [[NSXMLDocument alloc] initWithXMLString:update
-														   options:0
-															 error:&errorString];
-					
-					if (xmlDoc != nil) 
-					{
-					
-						NSXMLNode *aNode = [xmlDoc rootElement];
-						
-						
-						NSArray *name  = [aNode nodesForXPath:@"/ESATMUpdate[1]/mName[1]" error:&errorString];
-						NSArray *total = [aNode nodesForXPath:@"/ESATMUpdate[1]/mTotalCapacityProtected[1]" error:&errorString];
-						NSArray *used = [aNode nodesForXPath:@"/ESATMUpdate[1]/mUsedCapacityProtected[1]" error:&errorString];
-						NSArray *free = [aNode nodesForXPath:@"/ESATMUpdate[1]/mFreeCapacityProtected[1]" error:&errorString];
-
-						long long totalLong = [[[total objectAtIndex:0] stringValue] longLongValue];
-						
-						long long usedLong = [[[used objectAtIndex:0] stringValue] longLongValue];
-						long long freeLong = [[[free objectAtIndex:0] stringValue] longLongValue];
-
-						
-						printf ("%s\t%s\t%s\t%s\t%lld%%\n",[[[name objectAtIndex:0] stringValue] UTF8String],
-								[[[total objectAtIndex:0] stringValue] UTF8String],
-								[[[used objectAtIndex:0] stringValue] UTF8String],
-								[[[free objectAtIndex:0] stringValue] UTF8String], 
-								100*usedLong/totalLong);
-							
-						
+								100*[esa getUsedCapacityProtected]/[esa getTotalCapacityProtected]);
+						/*
 						while (aNode = [aNode nextNode]) {
-							
-							//NSLog(@"node: %@",[aNode stringValue]);
-							
-
-
 							NSLog(@"Name: %@=%@",[aNode XPath],[aNode objectValue]);
-							
-							/*
-							 if (kind == NSXMLTextKind) {
-							 NSLog(@"Text: %@",[aNode objectValue]);
-							 }
-							 */
 						}
-						
+						*/
 						
 						
 					} else {
@@ -360,7 +328,6 @@ int main(int argc, char *argv[])
 			}
 		}
 		//		[proxy unsubscribeClient:@"drobodash"];
-	}
 	
 	
 	[pool release];
