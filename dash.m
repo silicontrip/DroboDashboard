@@ -11,7 +11,6 @@
 #import <Foundation/NSPortNameServer.h>
 #import <Foundation/Foundation.h>
 #import <Foundation/NSString.h>
-#import <Foundation/NSXMLElement.h>
 #import <objc/runtime.h>
 
 #import "DDServer.h"
@@ -302,7 +301,7 @@ int main(int argc, char *argv[])
 
 						ESATMUpdate *esa;
 						
-					esa = [[ESATMUpdate alloc] initWithXMLString:update];
+						esa = [[ESATMUpdate alloc] initWithXMLString:update];
 						
 						printf ("%s\t%lld\t%lld\t%lld\t%lld%%\n",[[esa getName] UTF8String],
 								[esa getTotalCapacityProtected],

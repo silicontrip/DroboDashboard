@@ -10,7 +10,7 @@
 
 }
 
--(id)initWithXMLString:(NSString *)s;
+-(id)initWithString:(NSString *)update;
 
 -(NSString *)getESAID;
 -(NSString *)getSerial;

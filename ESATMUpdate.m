@@ -3,15 +3,12 @@
 
 @implementation ESATMUpdate 
 
--(id)initWithXMLString:(NSString *)update
+-(id)initWithString:(NSString *)update
 {
 	xmlDoc = [[NSXMLDocument alloc] initWithXMLString:update
 											  options:0
 												error:&errorString];
 }
-
-
-
 -(NSString *)getESAID { return [[[[xmlDoc rootElement] nodesForXPath:@"/ESATMUpdate[1]/mESAID[1]" error:&errorString] objectAtIndex:0] stringValue];}
 -(NSString *)getSerial { return [[[[xmlDoc rootElement] nodesForXPath:@"/ESATMUpdate[1]/mSerial[1]" error:&errorString] objectAtIndex:0] stringValue];}
 -(NSString *)getName { return [[[[xmlDoc rootElement] nodesForXPath:@"/ESATMUpdate[1]/mName[1]" error:&errorString] objectAtIndex:0] stringValue];}
