@@ -10,5 +10,8 @@
 - (void)registerESAEventListener:(NSDistantObject *)object;
 - (int)getNextESAEventType:(NSDistantObject *)object; 
 - (int)getNextESAUpdateEvent:(NSDistantObject *)object ESAID:(NSString **)esaid ESAUpdate:(NSString **)update; 
+- (int)dumpSlotInfo:(NSDistantObject *)object ESAID:(NSString *)esaid arraySlotData:(NSData **)data; 
+- (int)dumpLUNInfo:(NSDistantObject *)object ESAID:(NSString *)esaid arrayLUNData:(NSData **)data; 
+- (unsigned long)SendCommand:(NSDistantObject *)object ESAID:(NSString *)esaid cmd:(NSData **)data; 
 
 @end
