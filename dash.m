@@ -215,7 +215,6 @@ int main(int argc, char *argv[])
 	int ddservicedPort = 50005;
 
 	char rVal;
-	int riVal;
 	unsigned long ulVal;
 
         pool = [[NSAutoreleasePool alloc] init];
@@ -235,12 +234,11 @@ int main(int argc, char *argv[])
 	rVal = [proxy subscribeClient:proxy];  // apears to be first 
 
 	if (rVal == 1) {
-
-	
-
 		
-		//printSelectorString(@"getESACount:");
-		//printSelectorString(@"getESAId:ESAAtIndex:ESAID:");
+		int riVal;
+
+		printSelectorString(@"getESACount:");
+		printSelectorString(@"getESAId:ESAAtIndex:ESAID:");
 		//printSelectorString(@"dumpStatusInfo:ESAID:statusInfo:");
 		//printSelectorString(@"dumpCapacityInfo:ESAID:capacityInfo:");
 		//printSelectorString(@"dumpSlotInfo:ESAID:arraySlotData:");
@@ -264,6 +262,7 @@ int main(int argc, char *argv[])
 		
 		rVal = [proxy getESAId:proxy ESAAtIndex:0 ESAID:&esaid];
 		
+			
 		// NSLog(@"getESAId: %d",rVal);
 	//	NSLog(@"Drobo ID: %@",esaid);
 
@@ -287,7 +286,18 @@ int main(int argc, char *argv[])
 			riVal=[proxy dumpDiskPackInfo:proxy ESAID:esaid diskPackData:&command];
 	//		NSLog(@"diskpack info: %@",command);
 
+			
+			[proxy TMInit:proxy simulationMode:1 PollingInterval:5 VerboseLevel:1 FileMode:1 StartNetMonitorThread:1];
+			[proxy registerESAEventListener:proxy];
 
+			NSString *update;
+
+			
+			riVal = [proxy 	getNextESAUpdateEvent:proxy ESAID:&esaid ESAUpdate:&update];
+
+			NSLog (@"getNextESAUpdateEvent:%@",update);
+			
+			
 		}
 //		[proxy unsubscribeClient:@"drobodash"];
 	}
