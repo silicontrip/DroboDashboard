@@ -19,216 +19,25 @@
 NSAutoreleasePool  *pool;
 NSDistantObject *proxy;
 
-char *typeDecoding (const char *code) {
-	
-	static char decode[1024];
-	int index;
-	
-	decode[0] = '\0';
-	
-	//	decode = [[String alloc] init];
-	
-	for (index=0; index < strlen(code); index++) {
-		
-		if (index > 0)
-			strcat(decode," ");
-		
-		switch (code[index]) {
-				
-			case 'c':
-				strcat(decode,"char");	
-				break;
-				
-			case 'i':
-				strcat(decode,"int");	
-				break;
-				
-			case 's':
-				strcat(decode,"short");	
-				break;
-				
-			case 'l':
-				strcat(decode,"long");	
-				break;
-				
-			case 'q':
-				strcat(decode,"longlong");	
-				break;
-				
-			case 'C':
-				strcat(decode,"unsignedchar");	
-				break;
-				
-			case 'I':
-				strcat(decode,"unsignedint");	
-				break;
-				
-			case 'S':
-				strcat(decode,"unsignedshort");	
-				break;
-			case 'L':
-				strcat(decode,"unsignedlong");	
-				break;
-			case 'Q':
-				strcat(decode,"unsignedlonglong");	
-				break;
-				
-			case 'f':
-				strcat(decode,"float");
-				break;
-				
-			case 'd':
-				strcat(decode,"double");	
-				break;
-				
-			case 'B':
-				strcat(decode,"bool");	
-				break;
-				
-			case 'v':
-				strcat(decode,"void");	
-				break;
-				
-			case '*':
-				strcat(decode,"char*");	
-				break;
-				
-			case '@':
-				strcat(decode,"*Object");	
-				break;
-			case '#':
-				strcat(decode,"Class");	
-				break;
-				
-			case ':':
-				strcat(decode,"Selector");	
-				break;
-				
-			case '[':
-				strcat(decode,"array[");	
-				break;
-			case ']':
-				strcat(decode,"]");	
-				break;
-				
-			case '{':
-				strcat(decode,"struct{");	
-				break;
-			case '}':
-				strcat(decode,"}");	
-				break;
-				
-			case '(':
-				strcat(decode,"union(");	
-				break;
-			case ')':
-				strcat(decode,")");	
-				break;
-				
-			case 'b':
-				strcat(decode,"bits");	
-				break;
-				
-			case '^':
-				strcat(decode,"*");	
-				break;
-				
-			case '?':
-				strcat(decode,"unknown");	
-				break;
-				
-			case 'r':
-				strcat(decode,"const");	
-				break;
-				
-			case 'n':
-				strcat(decode,"in");	
-				break;
-				
-			case 'N':
-				strcat(decode,"inout");	
-				break;
-				
-			case 'o':
-				strcat(decode,"out");	
-				break;
-				
-			case 'O':
-				strcat(decode,"bycopy");	
-				break;
-				
-			case 'R':
-				strcat(decode,"byref");	
-				break;
-				
-			case 'V':
-				strcat(decode,"oneway");	
-				break;
-				
-			default:
-				break;
-				
-		}
-	}	
-	
-	return decode;
-	
-}
-
-printSelectorString (NSString *selString) {
-	int index;
-	NSMethodSignature *sig;
-	
-	NSArray *select  = [selString componentsSeparatedByString:@":"];
-	
-	sig = [proxy methodSignatureForSelector:NSSelectorFromString(selString)];
-
-	printf ("- (%s)",typeDecoding([sig methodReturnType]));
-	
-	for (index=2; index < [sig numberOfArguments]; index++) {
-		printf ("%s:(%s) ",[[select objectAtIndex:index-2] UTF8String], typeDecoding([sig getArgumentTypeAtIndex:index])); 
-	}
-	printf("\n");
-}
-
 int main(int argc, char *argv[])
 {
 	
 	NSSocketPort *port;
 	NSConnection *connection;
-	
-	struct statusInfo { 
-		unsigned int v1;
-		unsigned int v2;
-		unsigned int v3;
-	};
-	
-	struct capacityInfo {
-		unsigned long long v1;
-		unsigned long long v2;
-		unsigned long long v3;
-		unsigned long long v4;		
-	};
-	
-	struct statusInfo sInfo;
-	struct capacityInfo cInfo;
-	
-	DDServer *dd ;	
-	NSString *esaid;
-	NSString *esaupdate;
-	NSData *command;
-	
-	Method * mlist;
-	unsigned int mc = 0;
-	int index = 0;
-	int droboCount;
-	
-	int ddservicedPort = 50005;
-	
-	char rVal;
-	unsigned long ulVal;
+	DDServer *dd;	
+	const int ddservicedPort = 50005;
 	
 	pool = [[NSAutoreleasePool alloc] init];
+	
+	NSUserDefaults *args = [NSUserDefaults standardUserDefaults];
+	if([args boolForKey:@"help"])
+	{
+		printf ("-df df style capacity output\n");
+		printf("-v version information\n");
+		printf("-list list connected drobos\n");
+			   exit(0);
+	}
+
 	
 	port = [[NSSocketPort alloc] initRemoteWithTCPPort:ddservicedPort host:@"localhost"];
 	
@@ -243,36 +52,31 @@ int main(int argc, char *argv[])
 	
 	dd = (DDServer *)proxy;
 
-	NSLog(@"%@",[proxy description]);
-	
-	rVal = [dd subscribeClient:proxy];  // apears to be first 
-	
-	if (rVal == 1) {
+	// NSLog(@"%@",[proxy description]);
 		
-		int riVal;
-		
-		//printSelectorString(@"subscribeClient:");
-		//printSelectorString(@"getESACount:");
-		//printSelectorString(@"getESAId:ESAAtIndex:ESAID:");
-		//printSelectorString(@"dumpStatusInfo:ESAID:statusInfo:");
-		//printSelectorString(@"dumpCapacityInfo:ESAID:capacityInfo:");
-		//printSelectorString(@"dumpSlotInfo:ESAID:arraySlotData:");
-		//printSelectorString(@"dumpLUNInfo:ESAID:arrayLUNData:");
-		
-		//printSelectorString(@"TMInit:simulationMode:PollingInterval:VerboseLevel:FileMode:StartNetMonitorThread:");
-		//printSelectorString(@"SendCommand:ESAID:cmd:");
-		//printSelectorString(@"registerESAEventListener:");
-		//printSelectorString(@"getNextESAEventType:");
-		//printSelectorString(@"getNextESAUpdateEvent:ESAID:ESAUpdate:");
+	if ([dd subscribeClient:proxy] == 1) {
 		
 		
-		droboCount = [dd getESACount:proxy];
-	//	printf ("Number of drobos connected: %d\n", droboCount );
-		
+		int droboCount = [dd getESACount:proxy];
+		if([args boolForKey:@"list"]) {
+
+			printf ("Number of drobos connected: %d\n", droboCount );
+			int index;
+			NSString *esaid;
+			for (index=0; index < droboCount; index++) 
+			{
+				if ([dd getESAId:proxy ESAAtIndex:0 ESAID:&esaid]>0) {
+					
+					//	NSLog(@"getESAId: %d",rVal);
+						printf("%d: ID: %s\n",index,[esaid UTF8String]);
+				}
+			}
+			exit(0);
+		}
 		if (droboCount > 0) {
-			esaid = [[NSString alloc] init];
-			esaupdate = [[NSString alloc] init];
-			command = [[NSData alloc] init];
+			NSString *esaid = [[NSString alloc] init];
+			NSString *esaupdate = [[NSString alloc] init];
+			NSString *command = [[NSData alloc] init];
 			
 			if ([dd getESAId:proxy ESAAtIndex:0 ESAID:&esaid]>0) {
 				
@@ -288,7 +92,9 @@ int main(int argc, char *argv[])
 		StartNetMonitorThread:0];
 				
 				[dd registerESAEventListener:proxy];
-				
+
+				int riVal;
+
 				do {
 					// should probably sleep
 					riVal = [dd getNextESAEventType:proxy];
@@ -303,17 +109,42 @@ int main(int argc, char *argv[])
 						
 						esa = [[ESATMUpdate alloc] initWithString:update];
 						
+					if ([args boolForKey:@"version"]) {
+						printf("ID:           %s\n",[[esa getESAID] UTF8String]);
+						printf("Serial:       %s\n",[[esa getSerial] UTF8String]);
+						printf("Name:         %s\n",[[esa getName] UTF8String]);
+						printf("Version:      %s\n",[[esa getVersion] UTF8String]);
+						printf("Release Date: %s\n",[[esa getReleaseDate] UTF8String]);
+
+						printf("Architecture: %s\n",[[esa getArch] UTF8String]);
+						printf("Features:     %d\n",[esa getFirmwareFeatures]);
+
+						exit(0);
+					}
+					
+					if([args boolForKey:@"df"]) {
+
+					
 						printf ("%s\t%lld\t%lld\t%lld\t%lld%%\n",[[esa getName] UTF8String],
 								[esa getTotalCapacityProtected],
 								[esa getUsedCapacityProtected],
 								[esa getFreeCapacityProtected],
 
 								100*[esa getUsedCapacityProtected]/[esa getTotalCapacityProtected]);
-						/*
+						
+					}
+					
+					if([args boolForKey:@"xpath"]) {
+						NSError *errorString;
+
+						NSXMLDocument *xmlDoc = [[NSXMLDocument alloc] initWithXMLString:update
+																  options:0
+																	error:&errorString];
+						NSXMLNode *aNode = [xmlDoc rootElement];
 						while (aNode = [aNode nextNode]) {
 							NSLog(@"Name: %@=%@",[aNode XPath],[aNode objectValue]);
 						}
-						*/
+					}
 						
 						
 					} else {
