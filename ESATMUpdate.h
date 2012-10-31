@@ -5,7 +5,7 @@
 @interface ESATMUpdate : NSObject {
 
 	NSError *errorString;
-	NSXMLDocument *xmlDoc ;
+	NSXMLDocument *xmlDoc;
 
 
 }

@@ -56,7 +56,6 @@ int main(int argc, char *argv[])
 		
 	if ([dd subscribeClient:proxy] == 1) {
 		
-		
 		int droboCount = [dd getESACount:proxy];
 		if([args boolForKey:@"list"]) {
 
@@ -131,6 +130,22 @@ int main(int argc, char *argv[])
 								[esa getFreeCapacityProtected],
 
 								100*[esa getUsedCapacityProtected]/[esa getTotalCapacityProtected]);
+						exit(0);
+					}
+					
+					if ([args boolForKey:@"disks"])
+					{
+					
+						int disks = [esa getSlotCountExp];
+						printf("Number of Disks: %d\n",disks);
+						int slot;
+						for (slot=0; slot < disks; slot++)
+						{
+						
+							printf("Disk: %d size: %lld status: %d\n",[esa getPhysicalCapacityAtSlot:slot], [esa getStatusAtSlot:slot]);
+							
+						}
+
 						
 					}
 					
@@ -138,8 +153,8 @@ int main(int argc, char *argv[])
 						NSError *errorString;
 
 						NSXMLDocument *xmlDoc = [[NSXMLDocument alloc] initWithXMLString:update
-																  options:0
-																	error:&errorString];
+																				 options:0
+																				   error:&errorString];
 						NSXMLNode *aNode = [xmlDoc rootElement];
 						while (aNode = [aNode nextNode]) {
 							NSLog(@"Name: %@=%@",[aNode XPath],[aNode objectValue]);
@@ -161,5 +176,5 @@ int main(int argc, char *argv[])
 	
 	
 	[pool release];
-	
+	return 0;
 }
