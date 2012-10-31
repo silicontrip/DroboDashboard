@@ -301,7 +301,7 @@ int main(int argc, char *argv[])
 
 						ESATMUpdate *esa;
 						
-						esa = [[ESATMUpdate alloc] initWithXMLString:update];
+						esa = [[ESATMUpdate alloc] initWithString:update];
 						
 						printf ("%s\t%lld\t%lld\t%lld\t%lld%%\n",[[esa getName] UTF8String],
 								[esa getTotalCapacityProtected],
