@@ -10,13 +10,15 @@
 #import <Foundation/NSConnection.h>
 #import <Foundation/NSPortNameServer.h>
 #import <Foundation/Foundation.h>
+#import <Foundation/NSString.h>
 #import <objc/runtime.h>
 
+#import "DDServer.h"
 
 NSAutoreleasePool  *pool;
 NSDistantObject *proxy;
 
-char *typeDecoding (char *code) {
+char *typeDecoding (const char *code) {
 	
 	static char decode[1024];
 	int index;
@@ -174,10 +176,15 @@ printSelectorString (NSString *selString) {
 	int index;
 	NSMethodSignature *sig;
 	
-	sig = [proxy methodSignatureForSelector:NSSelectorFromString(selString)];
+	NSArray *select  = [selString componentsSeparatedByString:@":"];
 	
-	printf ("%s -> %s ", typeDecoding([sig methodReturnType]), [selString UTF8String]);
-	for (index =2; index < [sig numberOfArguments]; index++) { printf ("%s, ",typeDecoding([sig getArgumentTypeAtIndex:index])); }
+	sig = [proxy methodSignatureForSelector:NSSelectorFromString(selString)];
+
+	printf ("- (%s)",typeDecoding([sig methodReturnType]));
+	
+	for (index=2; index < [sig numberOfArguments]; index++) {
+		printf ("%s:(%s) ",[[select objectAtIndex:index-2] UTF8String], typeDecoding([sig getArgumentTypeAtIndex:index])); 
+	}
 	printf("\n");
 }
 
@@ -203,6 +210,7 @@ int main(int argc, char *argv[])
 	struct statusInfo sInfo;
 	struct capacityInfo cInfo;
 	
+	DDServer *dd ;	
 	NSString *esaid;
 	NSString *esaupdate;
 	NSData *command;
@@ -229,30 +237,34 @@ int main(int argc, char *argv[])
 	
 	connection = [NSConnection connectionWithReceivePort:nil sendPort:port];
 	proxy = [[connection rootProxy] retain];
+	
+	dd = (DDServer *)proxy;
+
 	NSLog(@"%@",[proxy description]);
 	
-	rVal = [proxy subscribeClient:proxy];  // apears to be first 
+	rVal = [dd subscribeClient:proxy];  // apears to be first 
 	
 	if (rVal == 1) {
 		
 		int riVal;
 		
+		printSelectorString(@"subscribeClient:");
 		printSelectorString(@"getESACount:");
 		printSelectorString(@"getESAId:ESAAtIndex:ESAID:");
-		//printSelectorString(@"dumpStatusInfo:ESAID:statusInfo:");
-		//printSelectorString(@"dumpCapacityInfo:ESAID:capacityInfo:");
-		//printSelectorString(@"dumpSlotInfo:ESAID:arraySlotData:");
-		//printSelectorString(@"dumpLUNInfo:ESAID:arrayLUNData:");
+		printSelectorString(@"dumpStatusInfo:ESAID:statusInfo:");
+		printSelectorString(@"dumpCapacityInfo:ESAID:capacityInfo:");
+		printSelectorString(@"dumpSlotInfo:ESAID:arraySlotData:");
+		printSelectorString(@"dumpLUNInfo:ESAID:arrayLUNData:");
 		
 		printSelectorString(@"TMInit:simulationMode:PollingInterval:VerboseLevel:FileMode:StartNetMonitorThread:");
-		//printSelectorString(@"SendCommand:ESAID:cmd:");
+		printSelectorString(@"SendCommand:ESAID:cmd:");
 		printSelectorString(@"registerESAEventListener:");
 		printSelectorString(@"getNextESAEventType:");
 		printSelectorString(@"getNextESAUpdateEvent:ESAID:ESAUpdate:");
-		//printSelectorString(@"SendCommand:ESAID:cmd:");
+		printSelectorString(@"SendCommand:ESAID:cmd:");
 		
 		
-		droboCount = [proxy getESACount:proxy];
+		droboCount = [dd getESACount:proxy];
 		printf ("Number of drobos connected: %d\n", droboCount );
 		
 		if (droboCount > 0) {
@@ -260,47 +272,48 @@ int main(int argc, char *argv[])
 			esaupdate = [[NSString alloc] init];
 			command = [[NSData alloc] init];
 			
-			rVal = [proxy getESAId:proxy ESAAtIndex:0 ESAID:&esaid];
-			
-			
-			NSLog(@"getESAId: %d",rVal);
-			NSLog(@"Drobo ID: %@",esaid);
-			
-			// riVal = [proxy dumpStatusInfo:proxy ESAID:esaid statusInfo:&sInfo];
-			
-			//	NSLog(@"Status info: %d %d %d",sInfo.v1, sInfo.v2, sInfo.v3);
-			
-			//riVal = [proxy dumpCapacityInfo:proxy ESAID:esaid capacityInfo:&cInfo];
-			
-			//	NSLog(@"Capacity info: %lu %lu %lu %lu",cInfo.v1, cInfo.v2, cInfo.v3, cInfo.v4);
-			
-			//	riVal = [proxy dumpSlotInfo:proxy ESAID:esaid arraySlotData:&command];  // contains drive model numbers
-			// NSLog(@"slot info: %@",command);
-			
-			//	riVal = [proxy dumpLUNInfo:proxy ESAID:esaid arrayLUNData:&command];  // contains bus path
-			// NSLog(@"lun info: %@",command);
-			
-			//	riVal = [proxy dumpLUNInfo2:proxy ESAID:esaid arrayLUNData:&command];  // contains rubbish
-			//	NSLog(@"lun info: %@",command);
-			
-			// riVal=[proxy dumpDiskPackInfo:proxy ESAID:esaid diskPackData:&command];
-			//		NSLog(@"diskpack info: %@",command);
-			
-			
-			[proxy TMInit:proxy simulationMode:0 PollingInterval:5 VerboseLevel:0 FileMode:0 StartNetMonitorThread:0];
-			[proxy registerESAEventListener:proxy];
-			
-			do {
-				riVal = [proxy getNextESAEventType:proxy];
-				// NSLog(@"getNextESAUpdateEventType: %d",riVal);
-			}while (riVal != 1);
+			if ([dd getESAId:proxy ESAAtIndex:0 ESAID:&esaid]>0) {
 				
-			NSString *update;			
-			
-			riVal = [proxy 	getNextESAUpdateEvent:proxy ESAID:&esaid ESAUpdate:&update];
-			NSLog(@"getNextESAUpdateEvent: %d",riVal);
-			NSLog (@"getNextESAUpdateEvent:%@",update);
-			
+				NSLog(@"getESAId: %d",rVal);
+				NSLog(@"Drobo ID: %@",esaid);
+				
+				
+				[dd TMInit:proxy 
+			   simulationMode:0 
+			  PollingInterval:5 
+				 VerboseLevel:0 
+					 FileMode:0 
+		StartNetMonitorThread:0];
+				
+				[dd registerESAEventListener:proxy];
+				
+				do {
+					// should probably sleep
+					riVal = [dd getNextESAEventType:proxy];
+					// NSLog(@"getNextESAUpdateEventType: %d",riVal);
+				} while (riVal != 1);
+				
+				NSString *update;			
+				
+				if ([dd getNextESAUpdateEvent:proxy ESAID:&esaid ESAUpdate:&update]>0) 
+				{
+
+					NSLog(@"buffer length: %d",[update length]);
+
+					NSError *errorString;
+					NSXMLDocument *xml ;
+					
+					xml = [[NSXMLDocument alloc] initWithXMLString:update
+														 options:0
+														   error:&errorString];
+					
+					if (xml == nil) 
+						NSLog(@"Error Parsing response");
+					
+					//	NSLog(@"getNextESAUpdateEvent: %d",riVal);
+					//	NSLog (@"getNextESAUpdateEvent:%@",update);
+				}
+			}
 		}
 		//		[proxy unsubscribeClient:@"drobodash"];
 	}
