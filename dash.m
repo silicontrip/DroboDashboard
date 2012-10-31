@@ -142,7 +142,7 @@ int main(int argc, char *argv[])
 						for (slot=0; slot < disks; slot++)
 						{
 						
-							printf("Disk: %d size: %lld status: %d\n",[esa getPhysicalCapacityAtSlot:slot], [esa getStatusAtSlot:slot]);
+							printf("Disk: %d size: %lld status: %d\n",slot,[esa getPhysicalCapacityAtSlot:slot], [esa getStatusAtSlot:slot]);
 							
 						}
 
