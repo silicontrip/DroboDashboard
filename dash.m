@@ -50,6 +50,7 @@ int main(int argc, char *argv[])
 	NSSocketPort *port;
 	NSConnection *connection;
 	const int ddservicedPort = 50005;
+	BOOL siunits = false;
 	
 	pool = [[NSAutoreleasePool alloc] init];
 	
@@ -64,9 +65,18 @@ int main(int argc, char *argv[])
 		printf ("\tdf df style capacity output\n");
 		printf("\tversion information\n");
 		printf("\tlist list connected drobos\n");
+		printf("\disks list disks and status\n");
+
 		printf("\t-esaid <ESAID> Specify which Drobo to use\n");
 		printf("\t-h Human readable number format\n");
+		printf("\t-si Use 1000 rather than 1024 for human readable display.\n");
+
+
 		exit(0);
+	}
+
+	if([args boolForKey:@"si"]) {
+		siunits = true;	
 	}
 	
 	
@@ -148,9 +158,9 @@ int main(int argc, char *argv[])
 						printf("%20s\t%s\t%s\t%s\t%s\n","Name","Total","Used","Free","Percent");	
 						if([args boolForKey:@"h"]) {
 							printf ("%20s\t%s\t%s\t%s\t%lld%%\n",[[esa getName] UTF8String],
-									[[HumanReadableDataSizeHelper humanReadableSizeFromBytes:[NSNumber numberWithLongLong:[esa getTotalCapacityProtected]]] UTF8String],
-									[[HumanReadableDataSizeHelper humanReadableSizeFromBytes:[NSNumber numberWithLongLong:[esa getUsedCapacityProtected]]] UTF8String],
-									[[HumanReadableDataSizeHelper humanReadableSizeFromBytes:[NSNumber numberWithLongLong:[esa getFreeCapacityProtected]]] UTF8String],
+									[[HumanReadableDataSizeHelper humanReadableSizeFromBytes:[NSNumber numberWithLongLong:[esa getTotalCapacityProtected]] useSiPrefixes:siunits  useSiMultiplier:siunits] UTF8String],
+									[[HumanReadableDataSizeHelper humanReadableSizeFromBytes:[NSNumber numberWithLongLong:[esa getUsedCapacityProtected]] useSiPrefixes:siunits  useSiMultiplier:siunits] UTF8String],
+									[[HumanReadableDataSizeHelper humanReadableSizeFromBytes:[NSNumber numberWithLongLong:[esa getFreeCapacityProtected]] useSiPrefixes:siunits  useSiMultiplier:siunits ] UTF8String],
 									
 									100*[esa getUsedCapacityProtected]/[esa getTotalCapacityProtected]);
 						} else {
@@ -179,6 +189,7 @@ int main(int argc, char *argv[])
 										 [NSNumber numberWithLongLong:
 										  [esa getPhysicalCapacityAtSlot:slot]
 										  ]
+										useSiPrefixes:siunits  useSiMultiplier:siunits
 										 ] 
 										UTF8String],
 									   [esa getStatusAtSlot:slot]);
