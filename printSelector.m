@@ -228,21 +228,25 @@ int main(int argc, char *argv[])
 	
 	dd = (DDServer *)proxy;
 
-	NSLog(@"%@",[proxy description]);
+	// NSLog(@"%@",[proxy description]);
 	
 	if ([dd subscribeClient:proxy] == 1) {
 		
 		int riVal;
 		
+		/*
 		NSString *fileContents = [NSString stringWithContentsOfFile:@"selector.txt" encoding:NSUTF8StringEncoding error:nil];
 		NSArray *lines = [fileContents componentsSeparatedByString:@"\n"];
 
 		for (NSString* o in lines)
 		{
 			if ([o length] > 0 ) {
-			printSelectorString(o);
+			 printSelectorString(o);
 			}
-		}		
+		}	
+		 */
+		if ([dd getESACount:proxy] > 0) {
+
 		NSString *esaid = [[NSString alloc] init];
 		NSString *esaupdate = [[NSString alloc] init];
 		NSString *command = [[NSData alloc] init];
@@ -251,14 +255,14 @@ int main(int argc, char *argv[])
 		
 			//[dd Identify:proxy  ESAID:esaid];
 			
-			NSString *name;
+			NSString *name = [[NSString alloc] init];
 			
 			[dd GetESA_DroboName:proxy ESAID:esaid droboName:name];
 			
 			NSLog(@"Drobo name: %@",name);
 			
 		}
-			
+		}
 	}	
 	
 	[pool release];
