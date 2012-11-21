@@ -19,23 +19,53 @@
 
 NSAutoreleasePool  *pool;
 NSDistantObject *proxy;
+DDServer *dd;	
+
+
+//-(void)listDrobo:(NSDistantObject *)proxy:(DDServer *)dd
+void listDrobo(NSDistantObject *proxy, DDServer *dd)
+{
+
+	int droboCount = [dd getESACount:proxy];
+	
+	printf ("Number of drobos connected: %d\n", droboCount );
+	int index;
+	NSString *esaid;
+	for (index=0; index < droboCount; index++) 
+	{
+		if ([dd getESAId:proxy ESAAtIndex:index ESAID:&esaid]>0) {
+			
+			//	NSLog(@"getESAId: %d",rVal);
+			printf("%d: ID: %s\n",index,[esaid UTF8String]);
+		}
+	}
+	
+	
+}
+
 
 int main(int argc, char *argv[])
 {
 	
 	NSSocketPort *port;
 	NSConnection *connection;
-	DDServer *dd;	
 	const int ddservicedPort = 50005;
 	
 	pool = [[NSAutoreleasePool alloc] init];
 	
 	NSUserDefaults *args = [NSUserDefaults standardUserDefaults];
+	
+	[[NSProcessInfo processInfo] arguments];
+	
 	if([args boolForKey:@"help"])
 	{
-		printf ("-df df style capacity output\n");
-		printf("-v version information\n");
-		printf("-list list connected drobos\n");
+		printf("Drobo dashboard Utility\nUtility to manage connected Drobos\n");
+		printf("Usage: dash <command> [options]\nCOMMANDS:");
+		printf ("\tdf df style capacity output\n");
+		printf("\tversion information\n");
+		printf("\tlist list connected drobos\n");
+		printf("\t-esaid <ESAID> Specify which Drobo to use\n");
+		printf("\t-h Human readable number format\n");
 		exit(0);
 	}
 	
@@ -57,27 +87,18 @@ int main(int argc, char *argv[])
 	
 	if ([dd subscribeClient:proxy] == 1) {
 		
-		int droboCount = [dd getESACount:proxy];
 		if([args boolForKey:@"list"]) {
-			
-			printf ("Number of drobos connected: %d\n", droboCount );
-			int index;
-			NSString *esaid;
-			for (index=0; index < droboCount; index++) 
-			{
-				if ([dd getESAId:proxy ESAAtIndex:0 ESAID:&esaid]>0) {
-					
-					//	NSLog(@"getESAId: %d",rVal);
-					printf("%d: ID: %s\n",index,[esaid UTF8String]);
-				}
-			}
+			//[self listDrobo:proxy:dd];
+			listDrobo(proxy,dd);
 			exit(0);
 		}
-		if (droboCount > 0) {
+		
+		if ([dd getESACount:proxy] > 0) {
 			NSString *esaid = [[NSString alloc] init];
 			NSString *esaupdate = [[NSString alloc] init];
 			NSString *command = [[NSData alloc] init];
 			
+
 			if ([dd getESAId:proxy ESAAtIndex:0 ESAID:&esaid]>0) {
 				
 				//	NSLog(@"getESAId: %d",rVal);
