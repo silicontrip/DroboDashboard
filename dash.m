@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
 		printf ("\tdf df style capacity output\n");
 		printf("\tversion information\n");
 		printf("\tlist list connected drobos\n");
-		printf("\disks list disks and status\n");
+		printf("\tdisks list disks and status\n");
 
 		printf("\t-esaid <ESAID> Specify which Drobo to use\n");
 		printf("\t-h Human readable number format\n");
@@ -95,6 +95,8 @@ int main(int argc, char *argv[])
 	
 	// NSLog(@"%@",[proxy description]);
 	
+	NSArray *arg =  [[NSProcessInfo processInfo] arguments];
+	
 	if ([dd subscribeClient:proxy] == 1) {
 		
 		if([args boolForKey:@"list"]) {
@@ -104,12 +106,22 @@ int main(int argc, char *argv[])
 		}
 		
 		if ([dd getESACount:proxy] > 0) {
-			NSString *esaid = [[NSString alloc] init];
+			
+			
+			
+			
+			NSString *esaid = [args stringForKey:@"esaid"];
+			
+			if (esaid == nil) { 
+				esaid = [[NSString alloc] init];
+				// get the first drobo
+				[dd getESAId:proxy ESAAtIndex:0 ESAID:&esaid];
+			}
+			
 			NSString *esaupdate = [[NSString alloc] init];
 			NSString *command = [[NSData alloc] init];
-			
 
-			if ([dd getESAId:proxy ESAAtIndex:0 ESAID:&esaid]>0) {
+			if (esaid!=nil) {
 				
 				//	NSLog(@"getESAId: %d",rVal);
 				//		NSLog(@"Drobo ID: %@",esaid);

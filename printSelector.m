@@ -249,7 +249,13 @@ int main(int argc, char *argv[])
 		
 		if ([dd getESAId:proxy ESAAtIndex:0 ESAID:&esaid]>0) {
 		
-			[dd Identify:proxy  ESAID:esaid];
+			//[dd Identify:proxy  ESAID:esaid];
+			
+			NSString *name;
+			
+			[dd GetESA_DroboName:proxy ESAID:esaid droboName:name];
+			
+			NSLog(@"Drobo name: %@",name);
 			
 		}
 			
