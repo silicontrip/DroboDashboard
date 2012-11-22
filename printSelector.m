@@ -15,6 +15,7 @@
 #import <objc/runtime.h>
 
 #import "DDServer.h"
+#import <objc/runtime.h>
 
 NSAutoreleasePool  *pool;
 NSDistantObject *proxy;
@@ -255,11 +256,17 @@ int main(int argc, char *argv[])
 		
 			//[dd Identify:proxy  ESAID:esaid];
 			
-			NSString *name = [[NSString alloc] init];
+			NSObject *name = [[NSObject alloc] init];
+			
+			
+			
 			
 			[dd GetESA_DroboName:proxy ESAID:esaid droboName:&name];
 			
-			NSLog(@"Drobo name: %@",name);
+			const char* className = class_getName([name class]);
+
+			
+			NSLog(@"Drobo name: %@ (%s)",name,className);
 			
 		}
 		}
