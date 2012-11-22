@@ -29,7 +29,8 @@ enum VerboseLevel
 };
 
 /// Defines the Slot status constants
-namespace SlotStatus
+/*
+enum SlotStatus
 {
 	/// LED off
 	static const esa_man::uint32 LEDOff						= 0;
@@ -51,7 +52,7 @@ namespace SlotStatus
 	static const esa_man::uint32 LEDSlotEmpty				= 0x80;
 };
 /// Defines the ESA status constants
-namespace ESAStatus
+enum ESAStatus
 {
 	/// Normal
 	static const esa_man::uint32 Normal						= 0x00;		// Generic nominal status
@@ -87,17 +88,7 @@ namespace ESAStatus
 	/// Something is very wrong
 	static const esa_man::uint32 UnknownStatus				= 0x10000000;	// packStatus::NOT_LOADED_NO_ERROR, et. al.
 };
-
-struct StatusInfo {
-	unsigned short s1;
-	short s2;
-	unsigned int i1;
-	float f1;
-	unsigned int mStatus;
-	unsigned int mRelayoutCount;
-	unsigned int mDiskPackStatus;
-};
-
+*/
 
 
 //-(void)listDrobo:(NSDistantObject *)proxy:(DDServer *)dd
