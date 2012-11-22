@@ -268,8 +268,13 @@ int main(int argc, char *argv[])
 
 			[dd GetFirmwareFeatures:proxy ESAID:esaid features:&f];
 			
-			printf("firmware Features: %d\n",f);
+			printf("firmware Features: %x\n",f);
 
+			struct StatusInfo si;
+
+			[dd dumpStatusInfo:proxy ESAID:esaid statusInfo:&si];
+
+			printf ("status s1: %d\ns2: %d\ni1: %d\nf1: %f\nstatus: %d\nrelay count: %d\ndisk pack status: %d\n",si.s1,si.s2,si.i1,si.f1,si.mStatus,si.mRelayoutCount,si.mDiskPackStatus);
 		}
 		}
 	}	
