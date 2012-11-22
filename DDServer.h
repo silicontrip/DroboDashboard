@@ -148,7 +148,23 @@
 // - (int)dumpLUNInfo2:(byref in *Object) ESAID:(bycopy in *Object) arrayLUNData:(bycopy out * *Object) 
 // - (int)dumpLUNInfo:(byref in *Object) ESAID:(bycopy in *Object) arrayLUNData:(bycopy out * *Object) 
 // - (int)dumpSlotInfo:(byref in *Object) ESAID:(bycopy in *Object) arraySlotData:(bycopy out * *Object) 
-// - (int)dumpCapacityInfo:(byref in *Object) ESAID:(bycopy in *Object) capacityInfo:(bycopy out * struct{ unsignedchar    char int   unsignedint in float out  unsignedlonglong unsignedlonglong unsignedlonglong unsignedlonglong }) 
+
+struct CapacityInfo
+{
+	unsigned char c1;
+	char c2;
+	int i1;
+	unsigned int i2;
+	float f1;
+	unsigned long long mFreeCapacityProtected;
+	unsigned long long mUsedCapacityProtected;
+	unsigned long long mTotalCapacityProtected;
+	unsigned long long mTotalCapacityUnprotected;
+};
+
+
+
+- (int)dumpCapacityInfo:(NSDistantObject *)object ESAID:(NSString *)esaid capacityInfo:(struct CapacityInfo**)capacity;
 
 struct StatusInfo {
 	unsigned short s1;
