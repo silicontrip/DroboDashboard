@@ -258,12 +258,11 @@ int main(int argc, char *argv[])
 			
 			NSObject *name = [[NSObject alloc] init];
 			
-			[dd getESAId:(NSDistantObject *)object ESAAtIndex:0 ESAID:&name];
+			[dd getESAId:proxy ESAAtIndex:0 ESAID:&name];
 			
-			const char* className = class_getName([name class]);
 
 			
-			NSLog(@"Drobo name: %@ (%s)",name,className);
+			NSLog(@"Drobo name: %@ (%@)",name,[name class]);
 			
 		}
 		}
