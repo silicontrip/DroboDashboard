@@ -263,7 +263,13 @@ int main(int argc, char *argv[])
 			
 			NSLog(@"output class: %@",[name class]);
 			NSLog(@"output: %@",[name description]);
+
+			unsigned int f;
+
+			[dd GetFirmwareFeatures:proxy ESAID:esaid features:&f];
 			
+			printf("firmware Features: %d\n",f);
+
 		}
 		}
 	}	
