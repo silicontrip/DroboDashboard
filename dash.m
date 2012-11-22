@@ -21,6 +21,13 @@ NSAutoreleasePool  *pool;
 NSDistantObject *proxy;
 DDServer *dd;	
 
+enum VerboseLevel
+{
+	vl_NONE = 1,		///< No logging message will be displayed
+	vl_VERBOSE = 2,		///< Informational message will be displayed
+	vl_DEBUG = 3		///< Informational and debugging message will be displayed
+};
+
 
 //-(void)listDrobo:(NSDistantObject *)proxy:(DDServer *)dd
 void listDrobo(NSDistantObject *proxy, DDServer *dd)
@@ -130,7 +137,7 @@ int main(int argc, char *argv[])
 				[dd TMInit:proxy 
 			simulationMode:0 
 		   PollingInterval:5 
-			  VerboseLevel:0 
+			  VerboseLevel:3 
 				  FileMode:0 
 	 StartNetMonitorThread:0];
 				
