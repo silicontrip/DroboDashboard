@@ -28,6 +28,77 @@ enum VerboseLevel
 	vl_DEBUG = 3		///< Informational and debugging message will be displayed
 };
 
+/// Defines the Slot status constants
+namespace SlotStatus
+{
+	/// LED off
+	static const esa_man::uint32 LEDOff						= 0;
+	/// Red LED on
+	static const esa_man::uint32 LEDRedOn					= 1;
+	/// Yellow LED on
+	static const esa_man::uint32 LEDYellowOn				= 2;
+	/// Green LED on
+	static const esa_man::uint32 LEDGreenOn					= 3;
+	/// LED flashing between yellow and green
+	static const esa_man::uint32 LEDFlashYellowGreen		= 4;
+	/// LED flashing between red and green
+	static const esa_man::uint32 LEDFlashRedGreen			= 5;
+	/// LED flashing red
+	static const esa_man::uint32 LEDFlashRed				= 6;
+	/// LED flashing between red and yellow
+	static const esa_man::uint32 LEDFlashRedYellow			= 7;
+	/// If the slot is empty (programatically or from startup, this bit will be set)
+	static const esa_man::uint32 LEDSlotEmpty				= 0x80;
+};
+/// Defines the ESA status constants
+namespace ESAStatus
+{
+	/// Normal
+	static const esa_man::uint32 Normal						= 0x00;		// Generic nominal status
+	/// Exceed red alert threshold
+	static const esa_man::uint32 RedThresholdExceeded		= 0x02;
+	/// Exceed yellow alert threshold
+	static const esa_man::uint32 YellowThresholdExceeded	= 0x04;
+	/// No disks avaialble
+	static const esa_man::uint32 NoDisks					= 0x08;		// SlotStatus suggests expansion slot
+	/// Bad disk detected
+	static const esa_man::uint32 BadDisk					= 0x10;		// SlotStatus indicates which disk
+	/// Multiple disks are removed
+	static const esa_man::uint32 TooManyMissingDisks		= 0x20;		// packStatus::TOO_MANY_MISSING_DISKS,
+	// packStatus::CRITICAL_DISK_MISSING
+	/// No redundancy
+	static const esa_man::uint32 NoRedundancy				= 0x40;		// SlotStatus suggests expansion slot
+	/// No maigc hot spare available
+	static const esa_man::uint32 NoMagicHotspare			= 0x80;		// SlotStatus suggests expansion slot
+	/// System is full
+	static const esa_man::uint32 SystemFull					= 0x100;	// SlotStatus suggests expansion slot
+	/// Re-layout in progress
+	static const esa_man::uint32 RelayoutInProgress			= 0x200;
+	/// Format in progress
+	static const esa_man::uint32 FormatInProgress			= 0x400;
+	/// Mismatched disk sets
+	static const esa_man::uint32 MismatchedDisks			= 0x800;	// packStatus::MISMATCHED_DISKS
+	/// Metatdata not understood
+	static const esa_man::uint32 UnknownVersion				= 0x1000;	// packStatus::UNKNOWN_VERSION
+	/// Firmware upgrade done, reboot required.
+	static const esa_man::uint32 NewFirmwareInstalled		= 0x2000;
+	/// New LUN available but not yet visible outside the ESA
+	static const esa_man::uint32 NewLunAvailableAfterReboot = 0x4000;
+	/// Something is very wrong
+	static const esa_man::uint32 UnknownStatus				= 0x10000000;	// packStatus::NOT_LOADED_NO_ERROR, et. al.
+};
+
+struct StatusInfo {
+	unsigned short s1;
+	short s2;
+	unsigned int i1;
+	float f1;
+	unsigned int mStatus;
+	unsigned int mRelayoutCount;
+	unsigned int mDiskPackStatus;
+};
+
+
 
 //-(void)listDrobo:(NSDistantObject *)proxy:(DDServer *)dd
 void listDrobo(NSDistantObject *proxy, DDServer *dd)
@@ -134,6 +205,7 @@ int main(int argc, char *argv[])
 				//		NSLog(@"Drobo ID: %@",esaid);
 				
 				
+				
 				[dd TMInit:proxy 
 			simulationMode:0 
 		   PollingInterval:1 
@@ -151,9 +223,12 @@ int main(int argc, char *argv[])
 				} while (riVal != 1);
 				
 				NSString *update;			
-				
-				if ([dd getNextESAUpdateEvent:proxy ESAID:&esaid ESAUpdate:&update]>0) 
+				NSString *esaidUpdate;			
+
+				do {
+				if ([dd getNextESAUpdateEvent:proxy ESAID:&esaidUpdate ESAUpdate:&update]>0) 
 				{
+					
 					
 					ESATMUpdate *esa;
 					
@@ -236,6 +311,8 @@ int main(int argc, char *argv[])
 				} else {
 					NSLog(@"Error Parsing response");
 				}
+				} while ([esaid compare:esaidUpdate] != 0);
+
 				
 				[dd unregisterESAEventListener:proxy];
 				[dd TMExit:proxy];

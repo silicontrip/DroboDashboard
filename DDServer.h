@@ -149,7 +149,19 @@
 // - (int)dumpLUNInfo:(byref in *Object) ESAID:(bycopy in *Object) arrayLUNData:(bycopy out * *Object) 
 // - (int)dumpSlotInfo:(byref in *Object) ESAID:(bycopy in *Object) arraySlotData:(bycopy out * *Object) 
 // - (int)dumpCapacityInfo:(byref in *Object) ESAID:(bycopy in *Object) capacityInfo:(bycopy out * struct{ unsignedchar    char int   unsignedint in float out  unsignedlonglong unsignedlonglong unsignedlonglong unsignedlonglong }) 
-// - (int)dumpStatusInfo:(byref in *Object) ESAID:(bycopy in *Object) statusInfo:(bycopy out * struct{ unsignedshort     short unsignedint in float out  unsignedint unsignedint unsignedint }) 
+
+struct StatusInfo {
+	unsigned short s1;
+	short s2;
+	unsigned int i1;
+	float f1;
+	unsigned int mStatus;
+	unsigned int mRelayoutCount;
+	unsigned int mDiskPackStatus;
+};
+
+
+- (int)dumpStatusInfo:(NSDistantObject *)object ESAID:(NSString *)pESAID statusInfo:(struct StatusInfo *)status; 
 
 
 @end
