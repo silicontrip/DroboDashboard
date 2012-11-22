@@ -257,7 +257,7 @@ int main(int argc, char *argv[])
 			
 			NSString *name = [[NSString alloc] init];
 			
-			[dd GetESA_DroboName:proxy ESAID:esaid droboName:name];
+			[dd GetESA_DroboName:proxy ESAID:esaid droboName:&name];
 			
 			NSLog(@"Drobo name: %@",name);
 			
