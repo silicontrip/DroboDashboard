@@ -4,19 +4,41 @@
 
 }
 - (char)subscribeClient:(NSDistantObject *)object;
+- (void)unsubscribeClient:(NSDistantObject *)object; 
 - (int)getESACount:(NSDistantObject *)object;
 - (char)getESAId:(NSDistantObject *)object ESAAtIndex:(int)index ESAID:(NSString **)esaid;
 - (void)TMInit:(NSDistantObject *)object simulationMode:(char)sim PollingInterval:(int)poll VerboseLevel:(int)ver FileMode:(char)mode StartNetMonitorThread:(char)thread; 
+- (oneway void)TMExit:(NSDistantObject *)object; 
 - (void)registerESAEventListener:(NSDistantObject *)object;
+- (oneway void)unregisterESAEventListener:(NSDistantObject *)object; 
 - (int)getNextESAEventType:(NSDistantObject *)object; 
 - (int)getNextESAUpdateEvent:(NSDistantObject *)object ESAID:(NSString **)esaid ESAUpdate:(NSString **)update; 
+- (unsigned long)SendCommand:(NSDistantObject *)object ESAID:(NSString *)esaid cmd:(NSData **)data; 
+
+- (char)GetESA_Time:(NSDistantObject *)object ESAID:(NSString *)esaid timeValue:(long *)time; 
+- (char)GetESA_DroboName:(NSDistantObject *)object ESAID:(NSString *)esaid droboName:(NSString **)name;
+- (char)GetESA_PartitionCount:(NSDistantObject *)object ESAID:(NSString *)esaid partitionCount:(unsigned int *)count; 
+- (char)GetESA_LUNLabels:(NSDistantObject *)object ESAID:(NSString *)esaid lunLabels:(NSString **)label; 
+- (unsigned int)GetProConfig:(NSDistantObject *)object ESAID:(NSString *)esaid configInfo:(NSData **)data; 
+- (unsigned int)GetSledConfig:(NSDistantObject *)object ESAID:(NSString *)esaid configInfo:(NSData **)data; 
+- (char)GetFirmwareFeatures:(NSDistantObject *)object ESAID:(NSString *)esaid features:(unsigned int*)feature; 
+- (char)GetOption_RealTimeIntegrityChecking:(NSDistantObject *)object ESAID:(NSString *)esaid value:(char *)check;
+- (char)GetOption_UseUnprotectedCapacity:(NSDistantObject *)object ESAID:(NSString *)esaid value:(char *)use;
+- (char)GetOption_RedThreshold:(NSDistantObject *)object ESAID:(NSString *)esaid threshold:(unsigned int*)red; 
+- (char)GetOption_YellowThreshold:(NSDistantObject *)object ESAID:(NSString *)esaid threshold:(unsigned int*)yellow; 
+- (unsigned int)GetDemoModeSupportInfo:(NSDistantObject *)object ESAID:(NSString *)esaid; 
+
+- (char)SetOption_RedThreshold:(NSDistantObject *)object ESAID:(NSString *)esaid threshold:(unsigned int)red;
+
+
+- (int)dumpOption2:(NSDistantObject *)object ESAID:(NSString *)esaid options2Data:(NSData **) data;
+- (int)dumpOption:(NSDistantObject *)object ESAID:(NSString *)esaid optionsData:(NSData **) data; 
 - (int)dumpSlotInfo:(NSDistantObject *)object ESAID:(NSString *)esaid arraySlotData:(NSData **)data; 
 - (int)dumpLUNInfo:(NSDistantObject *)object ESAID:(NSString *)esaid arrayLUNData:(NSData **)data; 
-- (unsigned long)SendCommand:(NSDistantObject *)object ESAID:(NSString *)esaid cmd:(NSData **)data; 
+- (int)dumpDiskPackInfo:(NSDistantObject *)object ESAID:(NSString *)esaid diskPackData:(NSData **)data; 
+- (int)dumpFirmwareInfo:(NSDistantObject *)object ESAID:(NSString *)esaid firmwareData:(NSData **)data; 
+
 - (char)Identify:(NSDistantObject *)object ESAID:(NSString *)esaid; 
-- (char)GetESA_Time:(NSDistantObject * )object ESAID:(NSString *)esaid timeValue:(long *)time; 
-- (char)GetESA_DroboName:(NSDistantObject * )object ESAID:(NSString *)esaid droboName:(NSString **)name;
-- (char)GetESA_PartitionCount:(NSDistantObject * )object ESAID:(NSString *)esaid partitionCount:(unsigned int *)count; 
 
 
 @end
@@ -45,10 +67,6 @@
  - (int)getNextESARemovalEvent:(byref in *Object) ESAID:(bycopy out * *Object) 
  - (int)getNextESAUpdateEvent:(byref in *Object) ESAID:(bycopy out * *Object) ESAUpdate:(bycopy out * *Object) 
  - (int)sendCDB:(byref in *Object) ESAID:(bycopy in *Object) cdb:(byref in *Object) cdbLength:(in unsignedint) cdbTransferType:(in unsignedint) data:(bycopy inout * *Object) dataSize:(inout * unsignedint) 
- - (int)dumpOption2:(byref in *Object) ESAID:(bycopy in *Object) options2Data:(bycopy out * *Object) 
- - (int)dumpOption:(byref in *Object) ESAID:(bycopy in *Object) optionsData:(bycopy out * *Object) 
- - (int)dumpDiskPackInfo:(byref in *Object) ESAID:(bycopy in *Object) diskPackData:(bycopy out * *Object) 
- - (int)dumpFirmwareInfo:(byref in *Object) ESAID:(bycopy in *Object) firmwareData:(bycopy out * *Object) 
  - (int)dumpConfigurationInfo:(byref in *Object) ESAID:(bycopy in *Object) configurationData:(bycopy out * *Object) 
  - (int)dumpSystemSetting:(byref in *Object) ESAID:(bycopy in *Object) systemSettingsData:(bycopy out * *Object) 
  - (int)dumpProtocolVersion:(byref in *Object) ESAID:(bycopy in *Object) majorVersion:(out * unsignedint) minorVersion:(out * unsignedint) 

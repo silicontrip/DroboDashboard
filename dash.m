@@ -230,6 +230,8 @@ int main(int argc, char *argv[])
 					NSLog(@"Error Parsing response");
 				}
 				
+				[dd unregisterESAEventListener:proxy];
+				[dd TMExit:proxy];
 				
 				//	NSLog(@"getNextESAUpdateEvent: %d",riVal);
 				//	NSLog (@"getNextESAUpdateEvent:%@",update);
@@ -237,6 +239,7 @@ int main(int argc, char *argv[])
 		} else {
 			NSLog(@"No Drobos Detected.");
 		}
+		[dd unsubscribeClient:proxy];
 	}
 	//		[proxy unsubscribeClient:@"drobodash"];
 	
