@@ -258,11 +258,11 @@ int main(int argc, char *argv[])
 			
 			NSObject *name = [[NSObject alloc] init];
 			
-			[dd getESAId:proxy ESAAtIndex:0 ESAID:&name];
+//			[dd getESAId:proxy ESAAtIndex:0 ESAID:&name];
+			[dd GetESA_LUNLabels:proxy ESAID:esaid lunLabels:&name];			
 			
-
-			
-			NSLog(@"Drobo name: %@ (%@)",name,[name class]);
+			NSLog(@"output class: %@",[name class]);
+			NSLog(@"output: %@",[name description]);
 			
 		}
 		}
