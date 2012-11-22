@@ -136,7 +136,7 @@ int main(int argc, char *argv[])
 				
 				[dd TMInit:proxy 
 			simulationMode:0 
-		   PollingInterval:5 
+		   PollingInterval:1 
 			  VerboseLevel:3 
 				  FileMode:0 
 	 StartNetMonitorThread:0];
