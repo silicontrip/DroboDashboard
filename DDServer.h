@@ -15,7 +15,7 @@
 - (unsigned long)SendCommand:(NSDistantObject *)object ESAID:(NSString *)esaid cmd:(NSData **)data; 
 - (char)Identify:(NSDistantObject *)object ESAID:(NSString *)esaid; 
 - (char)GetESA_Time:(NSDistantObject * )object ESAID:(NSString *)esaid timeValue:(long *)time; 
-- (char)GetESA_DroboName:(NSDistantObject * )object ESAID:(NSString *)esaid droboName:(NSString *)name;
+- (char)GetESA_DroboName:(NSDistantObject * )object ESAID:(NSString *)esaid droboName:(NSString **)name;
 - (char)GetESA_PartitionCount:(NSDistantObject * )object ESAID:(NSString *)esaid partitionCount:(unsigned int *)count; 
 
 
