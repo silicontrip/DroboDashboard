@@ -164,7 +164,7 @@ struct CapacityInfo
 
 
 
-- (int)dumpCapacityInfo:(NSDistantObject *)object ESAID:(NSString *)esaid capacityInfo:(struct CapacityInfo**)capacity;
+- (int)dumpCapacityInfo:(NSDistantObject *)object ESAID:(NSString *)esaid capacityInfo:(struct CapacityInfo*)capacity;
 
 struct StatusInfo {
 	unsigned short s1;
@@ -177,7 +177,7 @@ struct StatusInfo {
 };
 
 
-- (int)dumpStatusInfo:(NSDistantObject *)object ESAID:(NSString *)pESAID statusInfo:(struct StatusInfo **)status; 
+- (int)dumpStatusInfo:(NSDistantObject *)object ESAID:(NSString *)pESAID statusInfo:(struct StatusInfo *)status; 
 
 
 @end
