@@ -125,6 +125,13 @@
 ///\return true if the operation submitted successfully.
 - (char)Standby:(NSDistantObject *)object ESAID:(NSString *)pESAID dissentingVolume:(NSString **)pDissentingVolume;
 
+
+///\brief Restart the ESA
+///\param pESAID the ESA we want to perform this operation.
+///\return true if the operation submitted successfully. 
+- (char)Restart:(NSDistantObject *)object ESAID:(NSString *)pESAID; 
+
+
 ///\brief Force a TM re-broadcast of all connected ESAs
 ///\return true if the operation submitted successfully.
 - (char)ForceUpdate:(NSDistantObject *)object;
@@ -142,12 +149,12 @@
 - (int)dumpOption2:(NSDistantObject *)object ESAID:(NSString *)esaid options2Data:(NSData **) data;
 - (int)dumpOption:(NSDistantObject *)object ESAID:(NSString *)esaid optionsData:(NSData **) data; 
 // - (int)sendCDB:(byref in *Object) ESAID:(bycopy in *Object) cdb:(byref in *Object) cdbLength:(in unsignedint) cdbTransferType:(in unsignedint) data:(bycopy inout * *Object) dataSize:(inout * unsignedint) 
-// - (int)dumpConfigurationInfo:(byref in *Object) ESAID:(bycopy in *Object) configurationData:(bycopy out * *Object) 
-// - (int)dumpSystemSetting:(byref in *Object) ESAID:(bycopy in *Object) systemSettingsData:(bycopy out * *Object) 
-// - (int)dumpProtocolVersion:(byref in *Object) ESAID:(bycopy in *Object) majorVersion:(out * unsignedint) minorVersion:(out * unsignedint) 
-// - (int)dumpLUNInfo2:(byref in *Object) ESAID:(bycopy in *Object) arrayLUNData:(bycopy out * *Object) 
-// - (int)dumpLUNInfo:(byref in *Object) ESAID:(bycopy in *Object) arrayLUNData:(bycopy out * *Object) 
-// - (int)dumpSlotInfo:(byref in *Object) ESAID:(bycopy in *Object) arraySlotData:(bycopy out * *Object) 
+- (int)dumpConfigurationInfo:(NSDistantObject *)object ESAID:(NSString *)esaid configurationData:(NSData **) data; 
+- (int)dumpSystemSetting:(NSDistantObject *)object ESAID:(NSString *)esaid systemSettingsData:(NSData **) data; 
+- (int)dumpProtocolVersion:(NSDistantObject *)object ESAID:(NSString *)esaid majorVersion:(unsigned int *)major minorVersion:(unsigned int *)minor;
+- (int)dumpLUNInfo2:(NSDistantObject *)object ESAID:(NSString *)esaid arrayLUNData:(NSData **) data; 
+- (int)dumpLUNInfo:(NSDistantObject *)object ESAID:(NSString *)esaid arrayLUNData:(NSData **) data; 
+- (int)dumpSlotInfo:(NSDistantObject *)object ESAID:(NSString *)esaid arraySlotData:(NSData **) data; 
 
 struct CapacityInfo
 {
@@ -179,15 +186,12 @@ struct StatusInfo {
 
 - (int)dumpStatusInfo:(NSDistantObject *)object ESAID:(NSString *)pESAID statusInfo:(struct StatusInfo *)status; 
 
+- (char)ChangeVolumeChangeStatus:(NSDistantObject *)object volumeChangeID:(unsigned int)changeId volumeChangeStatus:(unsigned int)changeStatus;
+
 
 @end
-/*
- - (char)ChangeVolumeChangeStatus:(byref in *Object) volumeChangeID:(in unsignedint) volumeChangeStatus:(in unsignedint) \
- 
- ///\brief Restart the ESA
- ///\param pESAID the ESA we want to perform this operation.
- ///\return true if the operation submitted successfully. 
- - (char)Restart:(byref in *Object) ESAID:(bycopy in *Object) 
+
+/* 
 
  - (void)ReceiveSleepNote:(*Object) 
  - (void)ReceiveWakeNote:(*Object) 
