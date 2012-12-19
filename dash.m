@@ -216,7 +216,7 @@ int main(int argc, char *argv[])
 				NSString *update;			
 				NSString *esaidUpdate;			
 
-				do {
+			//	do {
 				if ([dd getNextESAUpdateEvent:proxy ESAID:&esaidUpdate ESAUpdate:&update]>0) 
 				{
 					
@@ -302,7 +302,7 @@ int main(int argc, char *argv[])
 				} else {
 					NSLog(@"Error Parsing response");
 				}
-				} while ([esaid compare:esaidUpdate] != 0);
+			//	} while ([esaid compare:esaidUpdate] != 0);
 
 				
 				[dd unregisterESAEventListener:proxy];
