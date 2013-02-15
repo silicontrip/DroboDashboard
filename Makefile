@@ -1,6 +1,6 @@
 
 COCOAFLAGS=-framework Foundation
-OBJ=ESATMUpdate.o dash.o
+OBJ=ESATMUpdate.o dash.o Arguments.o
 
 all: dash printSelector
 

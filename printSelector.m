@@ -275,6 +275,14 @@ int main(int argc, char *argv[])
 			[dd dumpStatusInfo:proxy ESAID:esaid statusInfo:&si];
 
 			printf ("status s1: %d\ns2: %d\ni1: %d\nf1: %f\nstatus: %d\nrelay count: %d\ndisk pack status: %d\n",si.s1,si.s2,si.i1,si.f1,si.mStatus,si.mRelayoutCount,si.mDiskPackStatus);
+
+			struct CapacityInfo ci;
+			[dd dumpCapacityInfo:proxy ESAID:esaid capacityInfo:&name];
+		
+			NSLog(@"output class: %@",[name class]);
+			NSLog(@"output: %@",[name description]);
+
+			//printf ("capacity c1: %d\nc2: %d\ni1: %d\ni2: %d\nf1: %f\nFree: %lld\nused: %lld\ntotal: %lld\nunprotected: %lld\n",ci.c1,ci.c2,ci.i1,ci.i2,ci.f1,ci.mFreeCapacityProtected,ci.mUsedCapacityProtected,ci.mTotalCapacityProtected,ci.mTotalCapacityUnprotected);
 		}
 		}
 	}	
