@@ -11,6 +11,50 @@
 
 NSAutoreleasePool  *pool;
 
+ESATMUpdate * getNextESAEvent (DDServer *dd, NSDistantObject *proxy) 
+{
+	NSString *update;			
+	NSString *esaidUpdate;			
+
+	if ([dd getNextESAUpdateEvent:proxy ESAID:&esaidUpdate ESAUpdate:&update]>0) 
+		return [[ESATMUpdate alloc] initWithString:update];
+
+	return nil;
+}			
+
+NSString *getESAID (DDServer *dd, NSDistantObject *proxy) 
+{
+	NSString *esaid;
+
+	esaid = [[NSString alloc] init];
+	// get the first drobo
+	[dd getESAId:proxy ESAAtIndex:0 ESAID:&esaid];
+	return esaid;
+}
+
+void initESAEvent (DDServer *dd, NSDistantObject *proxy) {
+
+	if ([dd getESACount:proxy] > 0) {
+					
+		[dd TMInit:proxy 
+			simulationMode:0 
+			PollingInterval:1 
+			VerboseLevel:3 
+			FileMode:0 
+			StartNetMonitorThread:0];
+				
+		[dd registerESAEventListener:proxy];
+				
+		int riVal;
+				
+		do {
+			// should probably sleep
+			riVal = [dd getNextESAEventType:proxy];
+		} while (riVal != 1);
+				
+	}
+}
+
 NSDistantObject * ddserverConnect (NSString *host,int ddservicedPort ) {
 
 	NSSocketPort *port;
@@ -117,9 +161,6 @@ int main(int argc, char *argv[])
 
         Arguments *newargs = [[Arguments alloc]  initWithNSProcessInfoArguments:[[NSProcessInfo processInfo] arguments]];
 	
-	//NSLog(@"Arguments: %@", newargs);
-	
-	
 	if([newargs containsArgument:@"help"] || [newargs optionForKey:@"help"])
 	{
 		usage();
@@ -133,107 +174,59 @@ int main(int argc, char *argv[])
 	if ([dd subscribeClient:proxy] == 1) {
 		
 		if([newargs containsArgument:@"list"]) {
-			//[self listDrobo:proxy:dd];
 			listDrobo(proxy,dd);
 			exit(0);
 		}
 		
-		if ([dd getESACount:proxy] > 0) {
-			
-			NSString *esaid = [newargs optionForKey:@"esaid"];
-			
-			if (esaid == nil) { 
-				esaid = [[NSString alloc] init];
-				// get the first drobo
-				[dd getESAId:proxy ESAAtIndex:0 ESAID:&esaid];
-			}
-			
-			NSString *esaupdate = [[NSString alloc] init];
-			NSString *command = [[NSData alloc] init];
 
-			if (esaid!=nil) {
-				
-				//	NSLog(@"getESAId: %d",rVal);
-				//		NSLog(@"Drobo ID: %@",esaid);
-				
-				
-				
-				[dd TMInit:proxy 
-			simulationMode:0 
-		   PollingInterval:1 
-			  VerboseLevel:3 
-				  FileMode:0 
-	 StartNetMonitorThread:0];
-				
-				[dd registerESAEventListener:proxy];
-				
-				int riVal;
-				
-				do {
-					// should probably sleep
-					riVal = [dd getNextESAEventType:proxy];
-				} while (riVal != 1);
-				
-				NSString *update;			
-				NSString *esaidUpdate;			
+		NSString *esaid = [newargs optionForKey:@"esaid"];
 
-			//	do {
-				if ([dd getNextESAUpdateEvent:proxy ESAID:&esaidUpdate ESAUpdate:&update]>0) 
-				{
-					
-					
-					ESATMUpdate *esa;
-					
-					esa = [[ESATMUpdate alloc] initWithString:update];
-					
-					if ([newargs containsArgument:@"version"]) {
-						esaVersion(esa);
-						exit(0);
-					}
-					
-					if([newargs containsArgument:@"df"]) {
-						df (esa,[newargs optionForKey:@"h"],[newargs optionForKey:@"si"]);
-						exit(0);
-					}
-					
-					if ([newargs containsArgument:@"disks"])
-					{
-						disks(esa,[newargs optionForKey:@"h"],[newargs optionForKey:@"si"]);	
-						exit(0);	
-					}
-					
-					if([newargs containsArgument:@"xpath"]) {
-						NSError *errorString;
-						
-						NSXMLDocument *xmlDoc = [[NSXMLDocument alloc] initWithXMLString:update
-																				 options:0
-																				   error:&errorString];
-						NSXMLNode *aNode = [xmlDoc rootElement];
-						while (aNode = [aNode nextNode]) {
-							NSLog(@"Name: %@=%@",[aNode XPath],[aNode objectValue]);
-						}
-					}
-					
-					
-				} else {
-					NSLog(@"Error Parsing response");
-				}
-			//	} while ([esaid compare:esaidUpdate] != 0);
+		if (esaid == nil) 
+			esaid = getESAID(dd,proxy);
 
-				
-				[dd unregisterESAEventListener:proxy];
-				[dd TMExit:proxy];
-				
-				//	NSLog(@"getNextESAUpdateEvent: %d",riVal);
-				//	NSLog (@"getNextESAUpdateEvent:%@",update);
-			}
-		} else {
-			NSLog(@"No Drobos Detected.");
+		initESAEvent(dd,proxy);
+
+		ESATMUpdate *esa = getNextESAEvent(dd,proxy);
+
+		if ([newargs containsArgument:@"version"]) {
+			esaVersion(esa);
+			exit(0);
 		}
-		[dd unsubscribeClient:proxy];
+					
+		if([newargs containsArgument:@"df"]) {
+			df (esa,[newargs optionForKey:@"h"],[newargs optionForKey:@"si"]);
+			exit(0);
+		}
+					
+		if ([newargs containsArgument:@"disks"])
+		{
+			disks(esa,[newargs optionForKey:@"h"],[newargs optionForKey:@"si"]);	
+			exit(0);	
+		}
+					
+/*
+
+// this should be moved to a debug method of ESATMUpdate class.
+		if([newargs containsArgument:@"xpath"]) {
+			NSError *errorString;
+					
+			NSXMLDocument *xmlDoc = [[NSXMLDocument alloc] initWithXMLString:update
+				options:0
+				error:&errorString];
+			NSXMLNode *aNode = [xmlDoc rootElement];
+
+			while (aNode = [aNode nextNode]) {
+				NSLog(@"Name: %@=%@",[aNode XPath],[aNode objectValue]);
+			}
+		}
+*/		
+		[dd unregisterESAEventListener:proxy];
+		[dd TMExit:proxy];
+				
+	} else {
+		NSLog(@"No Drobos Detected.");
 	}
-	//		[proxy unsubscribeClient:@"drobodash"];
-	
+	[dd unsubscribeClient:proxy];
 	
 	[pool release];
 	return 0;
