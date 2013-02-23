@@ -55,11 +55,12 @@ void initESAEvent (DDServer *dd, NSDistantObject *proxy) {
 	}
 }
 
-NSDistantObject * ddserverConnect (NSString *host,int ddservicedPort ) {
+NSDistantObject * ddserverConnect (NSString *host, int ddservicedPort ) {
 
 	NSSocketPort *port;
 	NSConnection *connection;
-
+	NSDistantObject *proxy;
+	
 	port = [[NSSocketPort alloc] initRemoteWithTCPPort:ddservicedPort host:host];
 	
 	if (port == nil) {
@@ -69,7 +70,10 @@ NSDistantObject * ddserverConnect (NSString *host,int ddservicedPort ) {
 	}
 	
 	connection = [NSConnection connectionWithReceivePort:nil sendPort:port];
-	return [[connection rootProxy] retain];
+	if (connection == nil)
+		return nil;
+	proxy = [connection rootProxy];
+	return [proxy retain];
 	// NSLog(@"%@",[proxy description]);
 	
 	
@@ -168,42 +172,52 @@ int main(int argc, char *argv[])
 		exit(0);
 	}
 
-	proxy = ddserverConnect (@"localhost",50005);
-
-	dd = (DDServer *)proxy;
+	NSString *host;
 	
-	if ([dd subscribeClient:proxy] == 1) {
+	if ([newargs containsArgument:@"host"])
+	{
+		host = [newargs optionForKey:@"host"];
+	} else {
+		host = @"localhost";
+	}
+	
+	@try {
+		proxy = ddserverConnect (host,50005);
+
+		dd = (DDServer *)proxy;
+	
+		if ([dd subscribeClient:proxy] == 1) {
 		
-		if([newargs containsArgument:@"list"]) {
-			listDrobo(proxy,dd);
-			exit(0);
-		}
+			if([newargs containsArgument:@"list"]) {
+				listDrobo(proxy,dd);
+				exit(0);
+			}
 		
 
-		NSString *esaid = [newargs optionForKey:@"esaid"];
+			NSString *esaid = [newargs optionForKey:@"esaid"];
 
-		if (esaid == nil) 
-			esaid = getESAID(dd,proxy);
+			if (esaid == nil) 
+				esaid = getESAID(dd,proxy);
 
-		initESAEvent(dd,proxy);
+			initESAEvent(dd,proxy);
 
-		ESATMUpdate *esa = getNextESAEvent(dd,proxy);
+			ESATMUpdate *esa = getNextESAEvent(dd,proxy);
 
-		if ([newargs containsArgument:@"version"]) {
-			esaVersion(esa);
-			exit(0);
-		}
+			if ([newargs containsArgument:@"version"]) {
+				esaVersion(esa);
+				exit(0);
+			}
 					
-		if([newargs containsArgument:@"df"]) {
-			df (esa,[newargs optionForKey:@"h"],[newargs optionForKey:@"si"]);
-			exit(0);
-		}
+			if([newargs containsArgument:@"df"]) {
+				df (esa,[newargs optionForKey:@"h"],[newargs optionForKey:@"si"]);
+				exit(0);
+			}
 					
-		if ([newargs containsArgument:@"disks"])
-		{
-			disks(esa,[newargs optionForKey:@"h"],[newargs optionForKey:@"si"]);	
-			exit(0);	
-		}
+			if ([newargs containsArgument:@"disks"])
+			{
+				disks(esa,[newargs optionForKey:@"h"],[newargs optionForKey:@"si"]);	
+				exit(0);	
+			}
 					
 /*
 
@@ -224,11 +238,20 @@ int main(int argc, char *argv[])
 		[dd unregisterESAEventListener:proxy];
 		[dd TMExit:proxy];
 				
-	} else {
-		NSLog(@"No Drobos Detected.");
-	}
-	[dd unsubscribeClient:proxy];
+		} else {
+			NSLog(@"No Drobos Detected.");
+		}
+		[dd unsubscribeClient:proxy];
 	
+	}@catch ( NSException *e ) {
+		
+		if ([[e name] compare:@"NSPortTimeoutException"] == 0) {
+			NSLog(@"Couldn't connect to Drobo server.  Does this machine have the Drobo software installed?");
+		} else {
+		
+			NSLog(@"An exception occured: name: %@ reason: %@ user: %@",[e name],[e reason],[e userInfo]);
+		}
+	}
 	[pool release];
 	return 0;
 }
