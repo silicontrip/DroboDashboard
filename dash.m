@@ -205,19 +205,18 @@ int main(int argc, char *argv[])
 
 			if ([newargs containsArgument:@"version"]) {
 				esaVersion(esa);
-				exit(0);
 			}
-					
+				else 	
 			if([newargs containsArgument:@"df"]) {
 				df (esa,[newargs optionForKey:@"h"],[newargs optionForKey:@"si"]);
-				exit(0);
 			}
-					
+					else
 			if ([newargs containsArgument:@"disks"])
 			{
 				disks(esa,[newargs optionForKey:@"h"],[newargs optionForKey:@"si"]);	
-				exit(0);	
-			}
+			} else {
+				printf ("Nothing to do. (try help --help)\n");
+				}
 					
 /*
 
@@ -246,7 +245,7 @@ int main(int argc, char *argv[])
 	}@catch ( NSException *e ) {
 		
 		if ([[e name] compare:@"NSPortTimeoutException"] == 0) {
-			NSLog(@"Couldn't connect to Drobo server.  Does this machine have the Drobo software installed?");
+			printf("Couldn't connect to Drobo server.\n");
 		} else {
 		
 			NSLog(@"An exception occured: name: %@ reason: %@ user: %@",[e name],[e reason],[e userInfo]);

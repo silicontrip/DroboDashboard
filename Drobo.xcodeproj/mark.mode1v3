@@ -216,7 +216,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>4DD9E32816D96EF9003DF3FD</string>
+						<string>4DD9E33616D9718A003DF3FD</string>
 						<key>history</key>
 						<array>
 							<string>4DD9E31016D9644B003DF3FD</string>
@@ -363,7 +363,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>4DD9E32716D96EF9003DF3FD</string>
+										<string>4DD9E33516D9718A003DF3FD</string>
 										<key>history</key>
 										<array>
 											<string>4DD9E2FE16D96433003DF3FD</string>
@@ -578,8 +578,8 @@
 		<string>4DD9E30F16D96433003DF3FD</string>
 		<string>1C78EAAD065D492600B07095</string>
 		<string>1CD10A99069EF8BA00B06720</string>
-		<string>4DD9E2F516D96430003DF3FD</string>
 		<string>/Users/mark/Developer/Drobo/Drobo.xcodeproj</string>
+		<string>4DD9E2F516D96430003DF3FD</string>
 		<string>4DD9E31816D96A84003DF3FD</string>
 	</array>
 	<key>WindowString</key>
@@ -599,6 +599,8 @@
 					<key>Dock</key>
 					<array>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -621,8 +623,6 @@
 							<string>218pt</string>
 						</dict>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -673,7 +673,7 @@
 			<key>WindowToolGUID</key>
 			<string>4DD9E2F516D96430003DF3FD</string>
 			<key>WindowToolIsVisible</key>
-			<false/>
+			<true/>
 		</dict>
 		<dict>
 			<key>FirstTimeWindowDisplayed</key>
