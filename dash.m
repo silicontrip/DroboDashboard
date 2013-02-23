@@ -113,7 +113,8 @@ void esaVersion(ESATMUpdate *esa) {
 	printf("Release Date: %s\n",[[esa getReleaseDate] UTF8String]);
 	
 	printf("Architecture: %s\n",[[esa getArch] UTF8String]);
-	printf("Features:     %d\n",[esa getFirmwareFeatures]);
+	printf("Features:     %x\n",[esa getFirmwareFeatures]);
+	printf("Status:       %x\n",[esa getStatus]);
 }	
 
 void usage() {
