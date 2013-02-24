@@ -88,6 +88,27 @@ const char *humanString ( long long number, NSNumber *human, NSNumber *si)
 	}
 }
 
+void printStatus (enum ESAStatus s) 
+{
+	
+	if (s==0)
+		printf ("%s ",esaStatus(s));
+	
+	enum ESAStatus t;
+	t=1;
+	
+	
+	
+	while (t < 0x8000) {
+	
+		if (s & t == t)
+			printf ("%s ",esaStatus(t));
+		
+		t *=2;
+	}
+}
+
+
 const char *esaStatus (enum ESAStatus s) 
 {
 
@@ -159,8 +180,11 @@ void esaVersion(ESATMUpdate *esa) {
 	printf("Release Date: %s\n",[[esa getReleaseDate] UTF8String]);
 	
 	printf("Architecture: %s\n",[[esa getArch] UTF8String]);
-	printf("Features:     %x\n",[esa getFirmwareFeatures]);
-	printf("Status:       %x\n",[esa getStatus]);
+	printf("Features:     %d\n",[esa getFirmwareFeatures]);
+	printf("Status:       ");
+	printStatus([esa getStatus]);
+	printf("\n");
+
 }	
 
 void usage() {
