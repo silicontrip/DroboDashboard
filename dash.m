@@ -88,25 +88,6 @@ const char *humanString ( long long number, NSNumber *human, NSNumber *si)
 	}
 }
 
-void printStatus (enum ESAStatus s) 
-{
-	
-	if (s==0)
-		printf ("%s ",esaStatus(s));
-	
-	enum ESAStatus t;
-	t=1;
-	
-	
-	
-	while (t < 0x8000) {
-	
-		if (s & t == t)
-			printf ("%s ",esaStatus(t));
-		
-		t *=2;
-	}
-}
 
 
 const char *esaStatus (enum ESAStatus s) 
@@ -133,6 +114,27 @@ const char *esaStatus (enum ESAStatus s)
 	
 	
 }
+
+void printStatus (enum ESAStatus s) 
+{
+	
+	if (s==0)
+		printf ("%s ",esaStatus(s));
+	
+	enum ESAStatus t;
+	t=1;
+	
+	
+	
+	while (t < 0x8000) {
+		
+		if (s & t == t)
+			printf ("%s ",esaStatus(t));
+		
+		t *=2;
+	}
+}
+
 
 const char *ledStatus (enum SlotStatus s)
 {
