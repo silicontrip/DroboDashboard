@@ -128,7 +128,7 @@ void printStatus (enum ESAStatus s)
 	
 	while (t < 0x8000) {
 		
-		if (s & t == t)
+		if ((s & t) == t)
 			printf ("%s ",esaStatus(t));
 		
 		t *=2;
