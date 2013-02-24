@@ -28,6 +28,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4D09F84E16D9E2E500E0FEA3 /* dash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dash.h; sourceTree = "<group>"; };
 		4DD9E2D516D8CCEC003DF3FD /* dash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = dash.m; sourceTree = "<group>"; };
 		4DD9E2D716D8CCF6003DF3FD /* ESATMUpdate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESATMUpdate.h; sourceTree = "<group>"; };
 		4DD9E2D816D8CD0E003DF3FD /* ESATMUpdate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ESATMUpdate.m; sourceTree = "<group>"; };
@@ -66,6 +67,7 @@
 		08FB7795FE84155DC02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				4D09F84E16D9E2E500E0FEA3 /* dash.h */,
 				4DD9E2ED16D96403003DF3FD /* Arguments.h */,
 				4DD9E2EE16D96403003DF3FD /* Arguments.m */,
 				4DD9E2DE16D8CEA7003DF3FD /* HumanReadableDataSizeHelper.h */,

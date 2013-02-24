@@ -88,6 +88,48 @@ const char *humanString ( long long number, NSNumber *human, NSNumber *si)
 	}
 }
 
+const char *esaStatus (enum ESAStatus s) 
+{
+
+	switch (s) {
+		case Normal: return "Normal"; break;
+		case RedThresholdExceeded: return "Red Threshold Exceeded"; break;
+		case YellowThresholdExceeded: return "Yellow Threshold Exceeded"; break;
+		case NoDisks: return "No Disks"; break;
+		case BadDisk: return "Bad Disk"; break;
+		case TooManyMissingDisks: return "Too Many Missing Disks"; break;
+		case NoRedundancy: return "No Redundancy"; break;
+		case NoMagicHotspare: return "No Magic Hotspare"; break;
+		case RelayoutInProgress: return "Relayout In Progress"; break;
+		case FormatInProgress: return "Format In Progress"; break;
+		case MismatchedDisks: return "Mismatched Disks"; break;
+		case UnknownVersion: return "Unknown Version"; break;
+		case NewFirmwareInstalled: return "New Firmware Installed"; break;
+		case NewLunAvailableAfterReboot: return "New Lun Available After Reboot"; break;
+		case UnknownStatus: return "Unknown Status"; break;	
+		default: return "UNKNOWN"; break;
+	}
+	
+	
+}
+
+const char *ledStatus (enum SlotStatus s)
+{
+
+	switch (s) {
+		case LEDOff: return "Off"; break;
+		case LEDRedOn: return "Red"; break;
+		case LEDYellowOn: return "Yellow"; break;
+		case LEDGreenOn: return "Green"; break;
+		case LEDFlashYellowGreen: return "Flashing Yellow-Green"; break;
+		case LEDFlashRedGreen: return "Flashing Red-Green"; break;
+		case LEDFlashRed: return "Flashing Red"; break;
+		case LEDFlashRedYellow: return "Flashing Red-Yellow"; break;
+		case LEDSlotEmpty: return "Empty"; break;
+		default: return "UNKNOWN"; break;
+	}
+}
+
 void disks (ESATMUpdate *esa, NSNumber *human, NSNumber *si)
 {
 	int disks = [esa getSlotCountExp];
@@ -95,7 +137,7 @@ void disks (ESATMUpdate *esa, NSNumber *human, NSNumber *si)
 	int slot;
 	for (slot=0; slot < disks; slot++)
 	{
-		printf("Disk: %d size: %s status: %d\n",slot,humanString([esa getPhysicalCapacityAtSlot:slot],human,si), [esa getStatusAtSlot:slot]);
+		printf("Disk: %d size: %s status: %s\n",slot,humanString([esa getPhysicalCapacityAtSlot:slot],human,si), ledStatus([esa getStatusAtSlot:slot]));
 	}	
 }
 
