@@ -166,8 +166,8 @@ void disks (ESATMUpdate *esa, NSNumber *human, NSNumber *si)
 
 void df (ESATMUpdate *esa, NSNumber *human, NSNumber *si) {
 
-		printf("%20s\t%s\t%s\t%s\t%s\n","Name","Total","Used","Free","Percent");	
-		printf ("%20s\t%s\t%s\t%s\t%lld%%\n",[[esa getName] UTF8String],
+		printf("%20s %14s %14s %14s %s\n","Name","Total","Used","Free","Percent");	
+		printf ("%20s %14s %14s %14s %lld%%\n",[[esa getName] UTF8String],
 			humanString([esa getTotalCapacityProtected],human,si),
 			humanString([esa getUsedCapacityProtected],human,si),
 			humanString([esa getFreeCapacityProtected],human,si),
