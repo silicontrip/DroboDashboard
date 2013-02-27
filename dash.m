@@ -191,15 +191,16 @@ void esaVersion(ESATMUpdate *esa) {
 
 void usage() {
 	printf("Drobo dashboard Utility\nUtility to manage connected Drobos\n");
-	printf("Usage: dash <command> [options]\nCOMMANDS:");
-	printf ("\tdf df style capacity output\n");
-	printf("\tversion information\n");
-	printf("\tlist list connected drobos\n");
-	printf("\tdisks list disks and status\n");
+	printf("Usage: dash <command> [options]\n\nCOMMANDS:\n");
+	printf ("df\tdf style capacity output\n");
+	printf("version\tdisplay version and status information\n");
+	printf("list\tlist connected drobos\n");
+	printf("disks\tlist disks and status\n");
+	printf("\nOPTIONS:\n");
 
-	printf("\t-esaid <ESAID> Specify which Drobo to use\n");
-	printf("\t-h Human readable number format\n");
-	printf("\t-si Use 1000 rather than 1024 for human readable display.\n");
+	printf("--esaid\t<ESAID> Specify which Drobo to use\n");
+	printf("-h\tHuman readable number format\n");
+	printf("--si\tUse 1000 rather than 1024 for human readable display.\n");
 }
 
 void listDrobo(NSDistantObject *proxy, DDServer *dd)
