@@ -4,7 +4,7 @@
 
 - (id)init
 {
-	[super init];
+	self = [super init];
 
 	opt = [[NSMutableDictionary alloc] init];
 	arg = [[NSMutableArray alloc] init];
@@ -12,7 +12,7 @@
 	return self;
 }
 
-- (NSString *) addArg:(NSString *)old:(NSString *)new:(bool *)end 
+- (NSString *) addArgOld:(NSString *)old New:(NSString *)new End:(bool *)end
 {
 
 	if (old) {
@@ -80,8 +80,8 @@
 
 - (id)initWithNSProcessInfoArguments:(NSArray *)a
 {
-	[self init];
-	NSMutableArray *args = [NSMutableArray arrayWithCapacity:[a count]];
+	self = [self init];
+	// NSMutableArray *args = [NSMutableArray arrayWithCapacity:[a count]];
 	NSString *oldArg = nil;
 	bool endOfArguments = false;
 
@@ -89,14 +89,18 @@
 	{
 
 //		NSLog(@"old: %@ current: %@",oldArg,argument);
-		oldArg = [self addArg:oldArg:argument:&endOfArguments];
+		oldArg = [self addArgOld:oldArg New:argument End:&endOfArguments];
 	}
 
 
-	[self addArg:oldArg:@"--":&endOfArguments];
+	[self addArgOld:oldArg New:@"--" End:&endOfArguments];
 
 	return self;
 
+}
+
+- (BOOL)hasArgument:(NSString *)s {
+    return [arg containsObject:s] || [opt objectForKey:s]!=nil;
 }
 
 - (BOOL)containsArgument:(NSString *)s
@@ -106,6 +110,18 @@
 - (id)optionForKey:(NSString *)s 
 {
 	return [opt objectForKey:s];
+}
+
+- (id)optionForShortKey:(NSString *)shortKey LongKey:(NSString *)longKey
+{
+    
+    // not sure if I should check to see if both long key and short key are set
+    
+    if ([self optionForKey:shortKey] != nil)
+        return [self optionForKey:shortKey];
+    
+    return [self optionForKey:longKey];
+
 }
 
 - (NSArray *)getArguments { return arg; }
