@@ -292,11 +292,8 @@ int main(int argc, char *argv[])
             else
             {
 				printf ("Nothing to do. (try help --help)\n");
-				}
+            }
 					
-
-
-// this should be moved to a debug method of ESATMUpdate class.
 		
 		[dd unregisterESAEventListener:proxy];
 		[dd TMExit:proxy];

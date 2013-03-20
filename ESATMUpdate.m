@@ -88,12 +88,16 @@
 -(int)getDiskPackStatus { return [[[[[xmlDoc rootElement] nodesForXPath:@"/ESATMUpdate[1]/mDiskPackStatus[1]" error:&errorString] objectAtIndex:0] stringValue] intValue];}
 -(void)dump
 {
+  
+    NSLog(@"%@",[xmlDoc XMLData]);
+    
+    /*
     NSXMLNode *aNode = [xmlDoc rootElement];
     
     while (aNode = [aNode nextNode]) {
         NSLog(@"Name: %@=%@",[aNode XPath],[aNode objectValue]);
     }
-
+*/
 }
 
 @end
