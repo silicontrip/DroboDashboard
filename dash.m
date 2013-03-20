@@ -286,7 +286,7 @@ int main(int argc, char *argv[])
 			} else
                 if([newargs containsArgument:@"xpath"]) {
                     
-                    [esa dump];
+                    [esa xpath];
                 }
 
             else

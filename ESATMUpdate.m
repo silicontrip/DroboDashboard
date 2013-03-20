@@ -86,18 +86,18 @@
 
 -(int)getSledStatus { return [[[[[xmlDoc rootElement] nodesForXPath:@"/ESATMUpdate[1]/mSledStatus[1]" error:&errorString] objectAtIndex:0] stringValue] intValue];}
 -(int)getDiskPackStatus { return [[[[[xmlDoc rootElement] nodesForXPath:@"/ESATMUpdate[1]/mDiskPackStatus[1]" error:&errorString] objectAtIndex:0] stringValue] intValue];}
--(void)dump
+-(void)xml
 {
   
-    NSLog(@"%@",[xmlDoc XMLData]);
-    
-    /*
+    NSLog(@"%@",[[NSString alloc] initWithData:[xmlDoc XMLData] encoding:NSASCIIStringEncoding ]);
+}    
+-(void)xpath
+{
     NSXMLNode *aNode = [xmlDoc rootElement];
     
     while (aNode = [aNode nextNode]) {
         NSLog(@"Name: %@=%@",[aNode XPath],[aNode objectValue]);
     }
-*/
 }
 
 @end
