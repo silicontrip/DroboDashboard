@@ -186,6 +186,7 @@ void esaVersion(ESATMUpdate *esa) {
 	printf("Status:       ");
 	printStatus([esa getStatus]);
 	printf("\n");
+	printf("Relayout Remaining: %d\n",[esa getRelayoutCount]);
 
 }	
 

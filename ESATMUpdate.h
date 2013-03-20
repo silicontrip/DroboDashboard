@@ -20,6 +20,7 @@
 -(NSString *)getArch;
 -(int)getFirmwareFeatures;
 -(int)getStatus;
+-(int)getRelayoutCount;
 -(long long)getTotalCapacityProtected;
 -(long long)getUsedCapacityProtected;
 -(long long)getFreeCapacityProtected;
@@ -42,6 +43,7 @@
 
 -(int)getSledStatus;
 -(int)getDiskPackStatus;
-
+-(void)xml;
+-(void)xpath;
 
 @end
