@@ -61,7 +61,7 @@ NSDistantObject * ddserverConnect (NSString *host, int ddservicedPort ) {
 	NSConnection *connection;
 	NSDistantObject *proxy;
 	
-	port = [[NSSocketPort alloc] initRemoteWithTCPPort:ddservicedPort host:host];
+	port = [[[NSSocketPort alloc] initRemoteWithTCPPort:ddservicedPort host:host] autorelease];
 	
 	if (port == nil) {
 		// this is actually a programming error
@@ -283,26 +283,21 @@ int main(int argc, char *argv[])
 			if ([newargs containsArgument:@"disks"])
 			{
 				disks(esa,[newargs optionForKey:@"h"],[newargs optionForKey:@"si"]);	
-			} else {
+			} else
+                if([newargs containsArgument:@"xpath"]) {
+                    
+                    [esa dump];
+                }
+
+            else
+            {
 				printf ("Nothing to do. (try help --help)\n");
 				}
 					
-/*
+
 
 // this should be moved to a debug method of ESATMUpdate class.
-		if([newargs containsArgument:@"xpath"]) {
-			NSError *errorString;
-					
-			NSXMLDocument *xmlDoc = [[NSXMLDocument alloc] initWithXMLString:update
-				options:0
-				error:&errorString];
-			NSXMLNode *aNode = [xmlDoc rootElement];
-
-			while (aNode = [aNode nextNode]) {
-				NSLog(@"Name: %@=%@",[aNode XPath],[aNode objectValue]);
-			}
-		}
-*/		
+		
 		[dd unregisterESAEventListener:proxy];
 		[dd TMExit:proxy];
 				
