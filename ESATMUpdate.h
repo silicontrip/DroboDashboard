@@ -1,12 +1,14 @@
 
 #import <Cocoa/Cocoa.h>
+#import "DDServer.h"
 
 
 @interface ESATMUpdate : NSObject {
 
 	NSError *errorString;
 	NSXMLDocument *xmlDoc;
-
+    NSDictionary *esaStatus;
+    NSDictionary *ledStatus;
 
 }
 

@@ -9,6 +9,36 @@
 	xmlDoc = [[NSXMLDocument alloc] initWithXMLString:update
 											  options:0
 												error:&errorString];
+    
+    esaStatus = [[NSDictionary alloc] initWithObjectsAndKeys:Normal, @"Normal",
+                 RedThresholdExceeded, @"Red Threshold Exceeded",
+                 YellowThresholdExceeded, @"Yellow Threshold Exceeded",
+                 NoDisks, @"No Disks",
+                 BadDisk, @"Bad Disk",
+                 TooManyMissingDisks, @"Too Many Missing Disks",
+                 NoRedundancy, @"No Redundancy",
+                 NoMagicHotspare, @"No Magic Hotspare",
+                 RelayoutInProgress, @"Relayout In Progress",
+                 FormatInProgress, @"Format In Progress",
+                 MismatchedDisks, @"Mismatched Disks",
+                 UnknownVersion, @"Unknown Version",
+                 NewFirmwareInstalled, @"New Firmware Installed",
+                 NewLunAvailableAfterReboot, @"New Lun Available After Reboot",
+                 UnknownStatus, @"Unknown Status",
+                 nil];
+    
+    NSLog(@"esaStatus: %@",esaStatus);
+    
+    ledStatus =[[NSDictionary alloc] initWithObjectsAndKeys:LEDOff, @"Off",
+                LEDRedOn, @"Red",
+                LEDYellowOn, @"Yellow",
+                LEDGreenOn, @"Green",
+                LEDFlashYellowGreen, @"Flashing Yellow-Green",
+                LEDFlashRedGreen, @"Flashing Red-Green",
+                LEDFlashRed, @"Flashing Red",
+                LEDFlashRedYellow, @"Flashing Red-Yellow",
+                LEDSlotEmpty, @"Empty", nil];
+    
 	return self;
 }
 -(NSString *)getESAID { return [[[[xmlDoc rootElement] nodesForXPath:@"/ESATMUpdate[1]/mESAID[1]" error:&errorString] objectAtIndex:0] stringValue];}
@@ -32,6 +62,10 @@
 -(int)getStatusAtSlot:(int)slot {
 	return [[[[[xmlDoc rootElement] nodesForXPath:[NSString stringWithFormat:@"/ESATMUpdate[1]/mSlotsExp[1]/n%d[1]/mStatus[1]",slot] error:&errorString] objectAtIndex:0] stringValue] longLongValue];	
 }
+-(NSString *)getStatusAtSlotAsString:(int)slot {
+	return [ledStatus objectForKey:[[[[[xmlDoc rootElement] nodesForXPath:[NSString stringWithFormat:@"/ESATMUpdate[1]/mSlotsExp[1]/n%d[1]/mStatus[1]",slot] error:&errorString] objectAtIndex:0] stringValue] longLongValue]];
+}
+
 -(long long)getPhysicalCapacityAtSlot:(int)slot {
 	return [[[[[xmlDoc rootElement] nodesForXPath:[NSString stringWithFormat:@"/ESATMUpdate[1]/mSlotsExp[1]/n%d[1]/mPhysicalCapacity[1]",slot] error:&errorString] objectAtIndex:0] stringValue] longLongValue];	
 }

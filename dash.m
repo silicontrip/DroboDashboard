@@ -161,7 +161,7 @@ void disks (ESATMUpdate *esa, NSNumber *human, NSNumber *si)
 	int slot;
 	for (slot=0; slot < disks; slot++)
 	{
-		printf("Disk: %d size: %s status: %s\n",slot,humanString([esa getPhysicalCapacityAtSlot:slot],human,si), ledStatus([esa getStatusAtSlot:slot]));
+		printf("Disk: %d size: %s status: %s\n",slot,humanString([esa getPhysicalCapacityAtSlot:slot],human,si), [[esa getStatusAtSlotAsString:slot] UTF8String]);
 	}	
 }
 
