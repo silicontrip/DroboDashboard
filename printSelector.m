@@ -176,7 +176,7 @@ char *typeDecoding (const char *code) {
 	
 }
 
-printSelectorString (NSString *selString) {
+void printSelectorString (NSString *selString) {
 	int index;
 	NSMethodSignature *sig;
 	
@@ -250,13 +250,13 @@ int main(int argc, char *argv[])
 
 		NSString *esaid = [[NSString alloc] init];
 		NSString *esaupdate = [[NSString alloc] init];
-		NSString *command = [[NSData alloc] init];
+		NSString *command = [[NSString alloc] init];
 		
 		if ([dd getESAId:proxy ESAAtIndex:0 ESAID:&esaid]>0) {
 		
 			//[dd Identify:proxy  ESAID:esaid];
 			
-			NSObject *name = [[NSObject alloc] init];
+			NSString *name = [[NSString alloc] init];
 			
 //			[dd getESAId:proxy ESAAtIndex:0 ESAID:&name];
 			[dd GetESA_LUNLabels:proxy ESAID:esaid lunLabels:&name];			
@@ -277,7 +277,7 @@ int main(int argc, char *argv[])
 			printf ("status s1: %d\ns2: %d\ni1: %d\nf1: %f\nstatus: %d\nrelay count: %d\ndisk pack status: %d\n",si.s1,si.s2,si.i1,si.f1,si.mStatus,si.mRelayoutCount,si.mDiskPackStatus);
 
 			struct CapacityInfo ci;
-			[dd dumpCapacityInfo:proxy ESAID:esaid capacityInfo:&name];
+			[dd dumpCapacityInfo:proxy ESAID:esaid capacityInfo:&ci];
 		
 			NSLog(@"output class: %@",[name class]);
 			NSLog(@"output: %@",[name description]);

@@ -96,7 +96,7 @@
 {
     NSXMLNode *aNode = [xmlDoc rootElement];
     
-    while (aNode = [aNode nextNode]) {
+    while ((aNode = [aNode nextNode])) {
         NSLog(@"Name: %@=%@",[aNode XPath],[aNode objectValue]);
     }
 }

@@ -103,6 +103,7 @@
 ///\param pValue a provided buffer location for a returned value
 ///\return true if we are able to get the value successfully
 - (char)GetOption_YellowThreshold:(NSDistantObject *)object ESAID:(NSString *)pESAID threshold:(unsigned int*)pValue; 
+ - (char)SetOption_YellowThreshold:(NSDistantObject *)object ESAID:(NSString *)pESAID threshold:(unsigned int)pValue;
 
 ///\brief Get DemoMode support info on the esa
 ///\param pESAID is the esa whose DemoMode support we want to query
