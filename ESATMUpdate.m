@@ -10,34 +10,37 @@
 											  options:0
 												error:&errorString];
     
-    esaStatus = [[NSDictionary alloc] initWithObjectsAndKeys:Normal, @"Normal",
-                 RedThresholdExceeded, @"Red Threshold Exceeded",
-                 YellowThresholdExceeded, @"Yellow Threshold Exceeded",
-                 NoDisks, @"No Disks",
-                 BadDisk, @"Bad Disk",
-                 TooManyMissingDisks, @"Too Many Missing Disks",
-                 NoRedundancy, @"No Redundancy",
-                 NoMagicHotspare, @"No Magic Hotspare",
-                 RelayoutInProgress, @"Relayout In Progress",
-                 FormatInProgress, @"Format In Progress",
-                 MismatchedDisks, @"Mismatched Disks",
-                 UnknownVersion, @"Unknown Version",
-                 NewFirmwareInstalled, @"New Firmware Installed",
-                 NewLunAvailableAfterReboot, @"New Lun Available After Reboot",
-                 UnknownStatus, @"Unknown Status",
-                 nil];
-    
+    esaStatus = [NSMapTable mapTableWithWeakToWeakObjects];
+    [esaStatus setObject:Normal forKey:@"Normal"];
+    [esaStatus setObject:RedThresholdExceeded forKey:@"Red Threshold Exceeded"];
+    [esaStatus setObject:YellowThresholdExceeded forKey:@"Yellow Threshold Exceeded"];
+     [esaStatus setObject:NoDisks forKey:@"No Disks"];
+     [esaStatus setObject:BadDisk forKey:@"Bad Disk"];
+     [esaStatus setObject:TooManyMissingDisks forKey:@"Too Many Missing Disks"];
+     [esaStatus setObject:NoRedundancy forKey:@"No Redundancy"];
+     [esaStatus setObject:NoMagicHotspare forKey:@"No Magic Hotspare"];
+     [esaStatus setObject:RelayoutInProgress forKey:@"Relayout In Progress"];
+     [esaStatus setObject:FormatInProgress forKey:@"Format In Progress"];
+     [esaStatus setObject:MismatchedDisks forKey:@"Mismatched Disks"];
+     [esaStatus setObject:UnknownVersion forKey:@"Unknown Version"];
+     [esaStatus setObject:NewFirmwareInstalled forKey:@"New Firmware Installed"];
+     [esaStatus setObject:NewLunAvailableAfterReboot forKey:@"New Lun Available After Reboot"];
+     [esaStatus setObject:UnknownStatus forKey:@"Unknown Status"];
+
     NSLog(@"esaStatus: %@",esaStatus);
     
-    ledStatus =[[NSDictionary alloc] initWithObjectsAndKeys:LEDOff, @"Off",
-                LEDRedOn, @"Red",
-                LEDYellowOn, @"Yellow",
-                LEDGreenOn, @"Green",
-                LEDFlashYellowGreen, @"Flashing Yellow-Green",
-                LEDFlashRedGreen, @"Flashing Red-Green",
-                LEDFlashRed, @"Flashing Red",
-                LEDFlashRedYellow, @"Flashing Red-Yellow",
-                LEDSlotEmpty, @"Empty", nil];
+     ledStatus = [NSMapTable mapTableWithWeakToWeakObjects];
+     
+    // [[NSDictionary alloc] initWithObjectsAndKeys:
+     [ledStatus setObject:LEDOff forKey:@"Off"];
+     [ledStatus setObject:LEDRedOn forKey:@"Red"];
+     [ledStatus setObject:LEDYellowOn forKey:@"Yellow"];
+     [ledStatus setObject:LEDGreenOn forKey:@"Green"];
+     [ledStatus setObject:LEDFlashYellowGreen forKey:@"Flashing Yellow-Green"];
+     [ledStatus setObject:LEDFlashRedGreen forKey:@"Flashing Red-Green"];
+     [ledStatus setObject:LEDFlashRed forKey:@"Flashing Red"];
+     [ledStatus setObject:LEDFlashRedYellow forKey:@"Flashing Red-Yellow"];
+     [ledStatus setObject:LEDSlotEmpty forKey:@"Empty"];
     
 	return self;
 }
@@ -63,7 +66,9 @@
 	return [[[[[xmlDoc rootElement] nodesForXPath:[NSString stringWithFormat:@"/ESATMUpdate[1]/mSlotsExp[1]/n%d[1]/mStatus[1]",slot] error:&errorString] objectAtIndex:0] stringValue] longLongValue];	
 }
 -(NSString *)getStatusAtSlotAsString:(int)slot {
-	return [ledStatus objectForKey:[[[[[xmlDoc rootElement] nodesForXPath:[NSString stringWithFormat:@"/ESATMUpdate[1]/mSlotsExp[1]/n%d[1]/mStatus[1]",slot] error:&errorString] objectAtIndex:0] stringValue] longLongValue]];
+    
+    enum ESAStatus esas = [[[[[xmlDoc rootElement] nodesForXPath:[NSString stringWithFormat:@"/ESATMUpdate[1]/mSlotsExp[1]/n%d[1]/mStatus[1]",slot] error:&errorString] objectAtIndex:0] stringValue] longLongValue];
+    return [ledStatus objectForKey:esas];
 }
 
 -(long long)getPhysicalCapacityAtSlot:(int)slot {
