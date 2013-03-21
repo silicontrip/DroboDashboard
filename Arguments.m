@@ -111,6 +111,10 @@
 {
 	return [opt objectForKey:s];
 }
+- (BOOL)hasOption:(NSString *)s
+{
+	return [[self optionForKey:s] isKindOfClass:[NSString class]];
+}
 
 - (id)optionForShortKey:(NSString *)shortKey LongKey:(NSString *)longKey
 {
