@@ -234,7 +234,7 @@ int main(int argc, char *argv[])
 	pool = [[NSAutoreleasePool alloc] init];
 	
 
-        Arguments *newargs = [[Arguments alloc]  initWithNSProcessInfoArguments:[[NSProcessInfo processInfo] arguments]];
+    Arguments *newargs = [[Arguments alloc]  initWithNSProcessInfoArguments:[[NSProcessInfo processInfo] arguments]];
 	
 	if([newargs containsArgument:@"help"] || [newargs optionForKey:@"help"])
 	{
@@ -263,32 +263,48 @@ int main(int argc, char *argv[])
 				exit(0);
 			}
 		
-
 			NSString *esaid = [newargs optionForKey:@"esaid"];
 
 			if (esaid == nil) 
 				esaid = getESAID(dd,proxy);
 
+            printf ("Using Drobo: %s\n",[esaid UTF8String]);
+            
 			initESAEvent(dd,proxy);
 
 			ESATMUpdate *esa = getNextESAEvent(dd,proxy);
 
-			if ([newargs containsArgument:@"version"]) {
+			if ([newargs containsArgument:@"version"])
+            {
 				esaVersion(esa);
 			}
-				else 	
-			if([newargs containsArgument:@"df"]) {
+            else if([newargs containsArgument:@"df"])
+            {
 				df (esa,[newargs optionForKey:@"h"],[newargs optionForKey:@"si"]);
 			}
-					else
-			if ([newargs containsArgument:@"disks"])
+            else if ([newargs containsArgument:@"disks"])
 			{
 				disks(esa,[newargs optionForKey:@"h"],[newargs optionForKey:@"si"]);	
-			} else
-                if([newargs containsArgument:@"xpath"]) {
-                    
-                    [esa xpath];
-                }
+			}
+            else if([newargs containsArgument:@"identify"])
+            {
+                [dd Identify:proxy ESAID:esaid];
+            }
+            else if([newargs containsArgument:@"standby"])
+            {
+                // what goes in dissentingVolume.
+                [dd Standby:proxy ESAID:esaid dissentingVolume:];
+            }
+            else if ([newargs optionForKey:@"yellow"])
+            {
+                
+                [dd GetOption_YellowThreshold:proxy ESAID:esaid threshold:];
+            }
+            // this is for debugging. Should be removed in the final version.
+            else if([newargs containsArgument:@"xpath"])
+            {
+                [esa xpath];
+            }
 
             else
             {
@@ -296,12 +312,13 @@ int main(int argc, char *argv[])
             }
 					
 		
-		[dd unregisterESAEventListener:proxy];
-		[dd TMExit:proxy];
+            [dd unregisterESAEventListener:proxy];
+            [dd TMExit:proxy];
 				
 		} else {
 			NSLog(@"No Drobos Detected.");
 		}
+        
 		[dd unsubscribeClient:proxy];
 	
 	}@catch ( NSException *e ) {
@@ -309,7 +326,6 @@ int main(int argc, char *argv[])
 		if ([[e name] compare:@"NSPortTimeoutException"] == 0) {
 			printf("Couldn't connect to Drobo server.\n");
 		} else {
-		
 			NSLog(@"An exception occured: name: %@ reason: %@ user: %@",[e name],[e reason],[e userInfo]);
 		}
 	}
