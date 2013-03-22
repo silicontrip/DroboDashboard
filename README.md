@@ -25,6 +25,7 @@ Command line tools to communicate with the DDService Daemon for monitoring a dir
 
 df output (with -h and --si)
 ----------------------------
+    ./dash df -h --si
     Drobo selected: 0db104xxxxxx_000
                     Name          Total           Used           Free Percent
          Drobo disk pack        6.97 TB        4.34 TB        2.62 TB 62%
@@ -33,6 +34,7 @@ There is about 7TB of total space and I have used 4.3TB of space, leaving 2.6TB 
 
 disks output (with -h)
 ----------------------
+    ./dash disks -h
     Drobo selected: 0db104xxxxxx_000
     Number of Disks: 4
     Disk: 0 size: 1.82 TiB status: Flashing Yellow-Green
@@ -42,10 +44,22 @@ disks output (with -h)
 
 This shows I have 4 disks, 2x 2TB disks and 2x 3TB disks.
 
+This can be seen more easily using the si (--si) units option.  Manufacturers use SI units for reporting size of their disks
+rather than the computer units.
+
+    ./dash disks -h --si
+    Drobo selected: 0db104xxxxxx_000
+    Number of Disks: 4
+    Disk: 0 size: 2 TB status: Flashing Yellow-Green
+    Disk: 1 size: 3 TB status: Flashing Yellow-Green
+    Disk: 2 size: 3 TB status: Flashing Yellow-Green
+    Disk: 3 size: 2 TB status: Flashing Yellow-Green
+
 This also shows that the Drobo is in a state of Relayout hence the Flashing Yellow-Green
 
 version output
 --------------
+    ./dash version
     Drobo selected: 0db104xxxxxx_000
     ID:           0db104xxxxxx
     Serial:       0DB104xxxxxx
@@ -57,8 +71,8 @@ version output
     Status:       No Redundancy, Relayout In Progress
     Relayout Remaining: 2260
 
-This showing the Drobo currently has not redundancy and cannot protect against disk failures.  It is currently performing a
-relayout on the parity data and has 2260 units to go.
+This showing the Drobo currently has no redundancy and cannot protect against disk failures.  It is currently
+performing a relayout on the parity data and has 2260 units to go.
 
 I do not know what a unit is, only that my drobo can process between 46 and 47 an hour.  It will take another 2 days to complete relayout.
 
@@ -97,6 +111,7 @@ Identify Drobo
     2013-03-22 14:48:23.835 dash[37108:10b] Drobo 0db104xxxxxx_000 identified.
 
 If a disk status is run immediately after you can see that the leds are showing identify status.
+
     ./dash disks
     Drobo selected: 0db104xxxxxx_000
     Number of Disks: 4
