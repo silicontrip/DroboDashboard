@@ -12,34 +12,40 @@
     
 
 	esaStatus =  [[NSDictionary alloc] initWithObjectsAndKeys:
-	[NSNumber numberWithInt:Normal],@"Normal",
+
+	@"Normal",[NSNumber numberWithInt:Normal],
+	@"Red Threshold Exceeded", [NSNumber numberWithInt:RedThresholdExceeded],
+	@"Yellow Threshold Exceeded", [NSNumber numberWithInt:YellowThresholdExceeded],
+	@"No Disks", [NSNumber numberWithInt:NoDisks],
+	@"Bad Disk", [NSNumber numberWithInt:BadDisk],
+	@"Too Many Missing Disks", [NSNumber numberWithInt:TooManyMissingDisks],
+	@"No Redundancy", [NSNumber numberWithInt:NoRedundancy],
+	@"No Magic Hotspare", [NSNumber numberWithInt:NoMagicHotspare],
+	@"Relayout In Progress", [NSNumber numberWithInt:RelayoutInProgress],
+	@"Format In Progress", [NSNumber numberWithInt:FormatInProgress], 
+	@"Mismatched Disks", [NSNumber numberWithInt:MismatchedDisks], 
+	@"Unknown Version", [NSNumber numberWithInt:UnknownVersion], 
+	@"New Firmware Installed", [NSNumber numberWithInt:NewFirmwareInstalled], 
+	@"New Lun Available After Reboot", [NSNumber numberWithInt:NewLunAvailableAfterReboot],
+	@"Unknown Status", [NSNumber numberWithInt:UnknownStatus],
 	nil];
-/*
-    esaStatus = [NSMapTable mapTableWithKeyOptions:NSMapTableObjectPointerPersonality valueOptions:NSMapTableStrongMemory];
-    [esaStatus setObject:(void *)Normal forKey:@"Normal"];
-    [esaStatus setObject:(void *)RedThresholdExceeded forKey:@"Red Threshold Exceeded"];
-    [esaStatus setObject:(void *)YellowThresholdExceeded forKey:@"Yellow Threshold Exceeded"];
-     [esaStatus setObject:(void *)NoDisks forKey:@"No Disks"];
-     [esaStatus setObject:(void *)BadDisk forKey:@"Bad Disk"];
-     [esaStatus setObject:(void *)TooManyMissingDisks forKey:@"Too Many Missing Disks"];
-     [esaStatus setObject:(void *)NoRedundancy forKey:@"No Redundancy"];
-     [esaStatus setObject:(void *)NoMagicHotspare forKey:@"No Magic Hotspare"];
-     [esaStatus setObject:(void *)RelayoutInProgress forKey:@"Relayout In Progress"];
-     [esaStatus setObject:(void *)FormatInProgress forKey:@"Format In Progress"];
-     [esaStatus setObject:(void *)MismatchedDisks forKey:@"Mismatched Disks"];
-     [esaStatus setObject:(void *)UnknownVersion forKey:@"Unknown Version"];
-     [esaStatus setObject:(void *)NewFirmwareInstalled forKey:@"New Firmware Installed"];
-     [esaStatus setObject:(void *)NewLunAvailableAfterReboot forKey:@"New Lun Available After Reboot"];
-     [esaStatus setObject:(void *)UnknownStatus forKey:@"Unknown Status"];
-*/
-    NSLog(@"esaStatus: %@",esaStatus);
+    //NSLog(@"esaStatus: %@",esaStatus);
     
 
     //ledStatus = [NSMapTable mapTableWithKeyOptions:NSMapTableObjectPointerPersonality valueOptions:NSMapTableStrongMemory];
      
     ledStatus= [[NSDictionary alloc] initWithObjectsAndKeys:
-	[NSNumber numberWithInt:LEDOff], @"Off",
+	@"Off", [NSNumber numberWithInt:LEDOff], 
+	@"Red", [NSNumber numberWithInt:LEDRedOn], 
+	@"Yellow", [NSNumber numberWithInt:LEDYellowOn], 
+	@"Green", [NSNumber numberWithInt:LEDGreenOn], 
+	@"Flashing Yellow-Green", [NSNumber numberWithInt:LEDFlashYellowGreen], 
+	@"Flashing Red-Green", [NSNumber numberWithInt:LEDFlashRedGreen], 
+	@"Flashing Red", [NSNumber numberWithInt:LEDFlashRed], 
+	@"Flashing Red-Yellow", [NSNumber numberWithInt:LEDFlashRedYellow], 
+	@"Empty", [NSNumber numberWithInt:LEDSlotEmpty], 
 	nil];
+    NSLog(@"ledStatus: %@",ledStatus);
 /*
      [ledStatus setObject:(void *)LEDOff forKey:@"Off"];
      [ledStatus setObject:(void *)LEDRedOn forKey:@"Red"];
@@ -77,7 +83,8 @@
 }
 -(NSString *)getStatusAtSlotAsString:(int)slot {
     
-    enum ESAStatus esas = [[[[[xmlDoc rootElement] nodesForXPath:[NSString stringWithFormat:@"/ESATMUpdate[1]/mSlotsExp[1]/n%d[1]/mStatus[1]",slot] error:&errorString] objectAtIndex:0] stringValue] longLongValue];
+    enum ESAStatus esas = [[[[[xmlDoc rootElement] nodesForXPath:[NSString stringWithFormat:@"/ESATMUpdate[1]/mSlotsExp[1]/n%d[1]/mStatus[1]",slot] error:&errorString] objectAtIndex:0] stringValue] intValue];
+	NSLog(@"ENUM: %d",esas);
     return [ledStatus objectForKey:[NSNumber numberWithInt:esas]];
 }
 
