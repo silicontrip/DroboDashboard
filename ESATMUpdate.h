@@ -7,8 +7,8 @@
 
 	NSError *errorString;
 	NSXMLDocument *xmlDoc;
-    NSMapTable *esaStatus;
-    NSMapTable *ledStatus;
+    NSDictionary *esaStatus;
+    NSDictionary *ledStatus;
 
 }
 

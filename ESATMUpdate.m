@@ -10,37 +10,47 @@
 											  options:0
 												error:&errorString];
     
-    esaStatus = [NSMapTable mapTableWithWeakToWeakObjects];
-    [esaStatus setObject:Normal forKey:@"Normal"];
-    [esaStatus setObject:RedThresholdExceeded forKey:@"Red Threshold Exceeded"];
-    [esaStatus setObject:YellowThresholdExceeded forKey:@"Yellow Threshold Exceeded"];
-     [esaStatus setObject:NoDisks forKey:@"No Disks"];
-     [esaStatus setObject:BadDisk forKey:@"Bad Disk"];
-     [esaStatus setObject:TooManyMissingDisks forKey:@"Too Many Missing Disks"];
-     [esaStatus setObject:NoRedundancy forKey:@"No Redundancy"];
-     [esaStatus setObject:NoMagicHotspare forKey:@"No Magic Hotspare"];
-     [esaStatus setObject:RelayoutInProgress forKey:@"Relayout In Progress"];
-     [esaStatus setObject:FormatInProgress forKey:@"Format In Progress"];
-     [esaStatus setObject:MismatchedDisks forKey:@"Mismatched Disks"];
-     [esaStatus setObject:UnknownVersion forKey:@"Unknown Version"];
-     [esaStatus setObject:NewFirmwareInstalled forKey:@"New Firmware Installed"];
-     [esaStatus setObject:NewLunAvailableAfterReboot forKey:@"New Lun Available After Reboot"];
-     [esaStatus setObject:UnknownStatus forKey:@"Unknown Status"];
 
+	esaStatus =  [[NSDictionary alloc] initWithObjectsAndKeys:
+	[NSNumber numberWithInt:Normal],@"Normal",
+	nil];
+/*
+    esaStatus = [NSMapTable mapTableWithKeyOptions:NSMapTableObjectPointerPersonality valueOptions:NSMapTableStrongMemory];
+    [esaStatus setObject:(void *)Normal forKey:@"Normal"];
+    [esaStatus setObject:(void *)RedThresholdExceeded forKey:@"Red Threshold Exceeded"];
+    [esaStatus setObject:(void *)YellowThresholdExceeded forKey:@"Yellow Threshold Exceeded"];
+     [esaStatus setObject:(void *)NoDisks forKey:@"No Disks"];
+     [esaStatus setObject:(void *)BadDisk forKey:@"Bad Disk"];
+     [esaStatus setObject:(void *)TooManyMissingDisks forKey:@"Too Many Missing Disks"];
+     [esaStatus setObject:(void *)NoRedundancy forKey:@"No Redundancy"];
+     [esaStatus setObject:(void *)NoMagicHotspare forKey:@"No Magic Hotspare"];
+     [esaStatus setObject:(void *)RelayoutInProgress forKey:@"Relayout In Progress"];
+     [esaStatus setObject:(void *)FormatInProgress forKey:@"Format In Progress"];
+     [esaStatus setObject:(void *)MismatchedDisks forKey:@"Mismatched Disks"];
+     [esaStatus setObject:(void *)UnknownVersion forKey:@"Unknown Version"];
+     [esaStatus setObject:(void *)NewFirmwareInstalled forKey:@"New Firmware Installed"];
+     [esaStatus setObject:(void *)NewLunAvailableAfterReboot forKey:@"New Lun Available After Reboot"];
+     [esaStatus setObject:(void *)UnknownStatus forKey:@"Unknown Status"];
+*/
     NSLog(@"esaStatus: %@",esaStatus);
     
-     ledStatus = [NSMapTable mapTableWithWeakToWeakObjects];
+
+    //ledStatus = [NSMapTable mapTableWithKeyOptions:NSMapTableObjectPointerPersonality valueOptions:NSMapTableStrongMemory];
      
-    // [[NSDictionary alloc] initWithObjectsAndKeys:
-     [ledStatus setObject:LEDOff forKey:@"Off"];
-     [ledStatus setObject:LEDRedOn forKey:@"Red"];
-     [ledStatus setObject:LEDYellowOn forKey:@"Yellow"];
-     [ledStatus setObject:LEDGreenOn forKey:@"Green"];
-     [ledStatus setObject:LEDFlashYellowGreen forKey:@"Flashing Yellow-Green"];
-     [ledStatus setObject:LEDFlashRedGreen forKey:@"Flashing Red-Green"];
-     [ledStatus setObject:LEDFlashRed forKey:@"Flashing Red"];
-     [ledStatus setObject:LEDFlashRedYellow forKey:@"Flashing Red-Yellow"];
-     [ledStatus setObject:LEDSlotEmpty forKey:@"Empty"];
+    ledStatus= [[NSDictionary alloc] initWithObjectsAndKeys:
+	[NSNumber numberWithInt:LEDOff], @"Off",
+	nil];
+/*
+     [ledStatus setObject:(void *)LEDOff forKey:@"Off"];
+     [ledStatus setObject:(void *)LEDRedOn forKey:@"Red"];
+     [ledStatus setObject:(void *)LEDYellowOn forKey:@"Yellow"];
+     [ledStatus setObject:(void *)LEDGreenOn forKey:@"Green"];
+     [ledStatus setObject:(void *)LEDFlashYellowGreen forKey:@"Flashing Yellow-Green"];
+     [ledStatus setObject:(void *)LEDFlashRedGreen forKey:@"Flashing Red-Green"];
+     [ledStatus setObject:(void *)LEDFlashRed forKey:@"Flashing Red"];
+     [ledStatus setObject:(void *)LEDFlashRedYellow forKey:@"Flashing Red-Yellow"];
+     [ledStatus setObject:(void *)LEDSlotEmpty forKey:@"Empty"];
+*/
     
 	return self;
 }
@@ -68,7 +78,7 @@
 -(NSString *)getStatusAtSlotAsString:(int)slot {
     
     enum ESAStatus esas = [[[[[xmlDoc rootElement] nodesForXPath:[NSString stringWithFormat:@"/ESATMUpdate[1]/mSlotsExp[1]/n%d[1]/mStatus[1]",slot] error:&errorString] objectAtIndex:0] stringValue] longLongValue];
-    return [ledStatus objectForKey:esas];
+    return [ledStatus objectForKey:[NSNumber numberWithInt:esas]];
 }
 
 -(long long)getPhysicalCapacityAtSlot:(int)slot {
