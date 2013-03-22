@@ -18,7 +18,7 @@ ESATMUpdate * getNextESAEvent (DDServer *dd, NSDistantObject *proxy)
 	NSString *esaidUpdate;			
 
 	if ([dd getNextESAUpdateEvent:proxy ESAID:&esaidUpdate ESAUpdate:&update]>0) 
-		return [[ESATMUpdate alloc] initWithString:update];
+		return [[[ESATMUpdate alloc] initWithString:update] autorelease];
 
 	return nil;
 }			
@@ -86,71 +86,6 @@ const char *humanString ( long long number, NSNumber *human, NSNumber *si)
 	 return [[HumanReadableDataSizeHelper humanReadableSizeFromBytes:[NSNumber numberWithLongLong:number] useSiPrefixes:[si boolValue]  useSiMultiplier:[si boolValue]] UTF8String];
 	} else {
 		return [[[NSNumber numberWithLongLong:number] stringValue] UTF8String];
-	}
-}
-
-
-
-const char *esaStatus (enum ESAStatus s) 
-{
-
-	switch (s) {
-		case Normal: return "Normal"; break;
-		case RedThresholdExceeded: return "Red Threshold Exceeded"; break;
-		case YellowThresholdExceeded: return "Yellow Threshold Exceeded"; break;
-		case NoDisks: return "No Disks"; break;
-		case BadDisk: return "Bad Disk"; break;
-		case TooManyMissingDisks: return "Too Many Missing Disks"; break;
-		case NoRedundancy: return "No Redundancy"; break;
-		case NoMagicHotspare: return "No Magic Hotspare"; break;
-		case RelayoutInProgress: return "Relayout In Progress"; break;
-		case FormatInProgress: return "Format In Progress"; break;
-		case MismatchedDisks: return "Mismatched Disks"; break;
-		case UnknownVersion: return "Unknown Version"; break;
-		case NewFirmwareInstalled: return "New Firmware Installed"; break;
-		case NewLunAvailableAfterReboot: return "New Lun Available After Reboot"; break;
-		case UnknownStatus: return "Unknown Status"; break;	
-		default: return "UNKNOWN"; break;
-	}
-	
-	
-}
-
-void printStatus (enum ESAStatus s) 
-{
-	
-	if (s==0)
-		printf ("%s ",esaStatus(s));
-	
-	enum ESAStatus t;
-	t=1;
-	
-	
-	
-	while (t < 0x8000) {
-		
-		if ((s & t) == t)
-			printf ("%s, ",esaStatus(t));
-		
-		t *=2;
-	}
-}
-
-
-const char *ledStatus (enum SlotStatus s)
-{
-
-	switch (s) {
-		case LEDOff: return "Off"; break;
-		case LEDRedOn: return "Red"; break;
-		case LEDYellowOn: return "Yellow"; break;
-		case LEDGreenOn: return "Green"; break;
-		case LEDFlashYellowGreen: return "Flashing Yellow-Green"; break;
-		case LEDFlashRedGreen: return "Flashing Red-Green"; break;
-		case LEDFlashRed: return "Flashing Red"; break;
-		case LEDFlashRedYellow: return "Flashing Red-Yellow"; break;
-		case LEDSlotEmpty: return "Empty"; break;
-		default: return "UNKNOWN"; break;
 	}
 }
 
