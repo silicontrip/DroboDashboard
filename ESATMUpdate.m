@@ -29,7 +29,6 @@
 	@"New Lun Available After Reboot", [NSNumber numberWithInt:NewLunAvailableAfterReboot],
 	@"Unknown Status", [NSNumber numberWithInt:UnknownStatus],
 	nil];
-    //NSLog(@"esaStatus: %@",esaStatus);
     
 
     //ledStatus = [NSMapTable mapTableWithKeyOptions:NSMapTableObjectPointerPersonality valueOptions:NSMapTableStrongMemory];
@@ -45,7 +44,6 @@
 	@"Flashing Red-Yellow", [NSNumber numberWithInt:LEDFlashRedYellow], 
 	@"Empty", [NSNumber numberWithInt:LEDSlotEmpty], 
 	nil];
-    NSLog(@"ledStatus: %@",ledStatus);
 /*
      [ledStatus setObject:(void *)LEDOff forKey:@"Off"];
      [ledStatus setObject:(void *)LEDRedOn forKey:@"Red"];
@@ -68,6 +66,27 @@
 -(NSString *)getArch { return [[[[xmlDoc rootElement] nodesForXPath:@"/ESATMUpdate[1]/mArch[1]" error:&errorString] objectAtIndex:0] stringValue];}
 -(int)getFirmwareFeatures { return [[[[[xmlDoc rootElement] nodesForXPath:@"/ESATMUpdate[1]/mFirmwareFeatures[1]" error:&errorString] objectAtIndex:0] stringValue] intValue];}
 -(int)getStatus { return [[[[[xmlDoc rootElement] nodesForXPath:@"/ESATMUpdate[1]/mStatus[1]" error:&errorString] objectAtIndex:0] stringValue] intValue];}
+-(NSArray *)getStatusAsArray {
+	int status = [self getStatus];
+	NSMutableArray *a = [NSMutableArray arrayWithCapacity:2];
+
+	enum ESAStatus t;
+        t=1;
+
+        while (t < 0x8000) {
+
+                if ((status & t) == t)
+                       [a addObject:[esaStatus objectForKey:[NSNumber numberWithInt:t]]];
+
+                t *=2;
+        }
+
+	return a;
+
+}
+-(NSString *)getStatusAsString {
+	return [[self getStatusAsArray] componentsJoinedByString:@", "];
+}
 -(int)getRelayoutCount { return [[[[[xmlDoc rootElement] nodesForXPath:@"/ESATMUpdate[1]/mRelayoutCount[1]" error:&errorString] objectAtIndex:0] stringValue] intValue]; }
 -(long long)getTotalCapacityProtected{ return [[[[[xmlDoc rootElement] nodesForXPath:@"/ESATMUpdate[1]/mTotalCapacityProtected[1]" error:&errorString] objectAtIndex:0] stringValue] longLongValue];}
 -(long long)getUsedCapacityProtected { return [[[[[xmlDoc rootElement] nodesForXPath:@"/ESATMUpdate[1]/mUsedCapacityProtected[1]" error:&errorString] objectAtIndex:0] stringValue] longLongValue];}
@@ -82,10 +101,7 @@
 	return [[[[[xmlDoc rootElement] nodesForXPath:[NSString stringWithFormat:@"/ESATMUpdate[1]/mSlotsExp[1]/n%d[1]/mStatus[1]",slot] error:&errorString] objectAtIndex:0] stringValue] longLongValue];	
 }
 -(NSString *)getStatusAtSlotAsString:(int)slot {
-    
-    enum ESAStatus esas = [[[[[xmlDoc rootElement] nodesForXPath:[NSString stringWithFormat:@"/ESATMUpdate[1]/mSlotsExp[1]/n%d[1]/mStatus[1]",slot] error:&errorString] objectAtIndex:0] stringValue] intValue];
-	NSLog(@"ENUM: %d",esas);
-    return [ledStatus objectForKey:[NSNumber numberWithInt:esas]];
+    return [ledStatus objectForKey:[NSNumber numberWithInt:[self getStatusAtSlot:slot]]];
 }
 
 -(long long)getPhysicalCapacityAtSlot:(int)slot {

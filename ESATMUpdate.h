@@ -22,6 +22,8 @@
 -(NSString *)getArch;
 -(int)getFirmwareFeatures;
 -(int)getStatus;
+-(NSArray *)getStatusAsArray;
+-(NSString *)getStatusAsString;
 -(int)getRelayoutCount;
 -(long long)getTotalCapacityProtected;
 -(long long)getUsedCapacityProtected;
@@ -33,6 +35,7 @@
 -(NSString *)getDroboName;
 -(int)getSlotCountExp;
 -(int)getStatusAtSlot:(int)slot;
+-(NSString *)getStatusAtSlotAsString:(int)slot;
 -(long long)getPhysicalCapacityAtSlot:(int)slot;
 
 -(int)getLUNCount;

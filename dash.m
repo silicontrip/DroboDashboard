@@ -184,9 +184,7 @@ void esaVersion(ESATMUpdate *esa) {
 	
 	printf("Architecture: %s\n",[[esa getArch] UTF8String]);
 	printf("Features:     %d\n",[esa getFirmwareFeatures]);
-	printf("Status:       ");
-	printStatus([esa getStatus]);
-	printf("\n");
+	printf("Status:       %s\n",[[esa getStatusAsString] UTF8String]);
 	printf("Relayout Remaining: %d\n",[esa getRelayoutCount]);
 
 }	
