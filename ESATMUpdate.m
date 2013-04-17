@@ -70,6 +70,12 @@
 	int status = [self getStatus];
 	NSMutableArray *a = [NSMutableArray arrayWithCapacity:2];
 
+    
+    if (status == 0)
+    {
+        [a addObject:[esaStatus objectForKey:[NSNumber numberWithInt:0]]];
+    }
+    
 	enum ESAStatus t;
         t=1;
 
@@ -162,7 +168,7 @@
 -(void)xml
 {
   
-    NSLog(@"%@",[[NSString alloc] initWithData:[xmlDoc XMLData] encoding:NSASCIIStringEncoding ]);
+    NSLog(@"%@",[[[NSString alloc] initWithData:[xmlDoc XMLData] encoding:NSASCIIStringEncoding ] autorelease]);
 }    
 -(void)xpath
 {
