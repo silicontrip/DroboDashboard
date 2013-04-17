@@ -62,6 +62,8 @@ NSDistantObject * ddserverConnect (NSString *host, int ddservicedPort ) {
 	NSConnection *connection;
 	NSDistantObject *proxy;
 	
+   // NSLog(@"Connecting to: %@ %d",host,ddservicedPort);
+    
 	port = [[[NSSocketPort alloc] initRemoteWithTCPPort:ddservicedPort host:host] autorelease];
 	
 	if (port == nil) {
@@ -186,7 +188,9 @@ int main(int argc, char *argv[])
 {
 	
 	NSDistantObject *proxy;
-	DDServer *dd;	
+	DDServer *dd;
+	
+    int port;
 	
 	pool = [[NSAutoreleasePool alloc] init];
 	
@@ -201,6 +205,16 @@ int main(int argc, char *argv[])
 
 	NSString *host;
 	
+    // Drobo Dashboard 2 uses new port and appears to be a new protocol.
+    
+    if ([newargs optionForKey:@"port"])
+	{
+		port = [[newargs optionForKey:@"port"] intValue];
+	} else {
+		port = 50005;
+	}
+
+    
 	if ([newargs containsArgument:@"host"])
 	{
 		host = [newargs optionForKey:@"host"];
@@ -209,7 +223,7 @@ int main(int argc, char *argv[])
 	}
 	
 	@try {
-		proxy = ddserverConnect (host,50005);
+		proxy = ddserverConnect (host,port);
 
 		dd = (DDServer *)proxy;
 	
