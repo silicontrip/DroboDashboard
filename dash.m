@@ -127,10 +127,15 @@ void esaVersion(ESATMUpdate *esa) {
 void usage() {
 	printf("Drobo dashboard Utility\nUtility to manage connected Drobos\n");
 	printf("Usage: dash <command> [options]\n\nCOMMANDS:\n");
-	printf ("df\tdf style capacity output\n");
-	printf("version\tdisplay version and status information\n");
-	printf("list\tlist connected drobos\n");
-	printf("disks\tlist disks and status\n");
+	printf ("df\t\tdf style capacity output\n");
+	printf("version\t\tdisplay version and status information\n");
+	printf("list\t\tlist connected drobos\n");
+	printf("disks\t\tlist disks and status\n");
+	printf("identify\tFlash all leds red-green for identification\n");
+	printf("standby\t\tpowerdown drobo.\n");
+	printf("restart\t\trestart drobo.\n");
+	printf("--red [threshold]\tDisplay or set the red threshold.\n");
+	printf("--yellow [threshold]\tDisplay or set the yellow threshold.\n");
 	printf("\nOPTIONS:\n");
 
 	printf("--esaid\t<ESAID> Specify which Drobo to use\n");
@@ -223,83 +228,83 @@ int main(int argc, char *argv[])
 
 			if (checkDrobo(proxy,dd,esaid)) {
 
-			printf ("Drobo selected: %s\n",[esaid UTF8String]);
+				printf ("Drobo selected: %s\n",[esaid UTF8String]);
 
-			initESAEvent(dd,proxy);
+				initESAEvent(dd,proxy);
 
-			ESATMUpdate *esa = getNextESAEvent(dd,proxy);
+				ESATMUpdate *esa = getNextESAEvent(dd,proxy);
 
-			if ([newargs containsArgument:@"version"]) 
-			{
-				esaVersion(esa);
-			}
-			else if([newargs containsArgument:@"df"]) 
-			{
-				df (esa,[newargs optionForKey:@"h"],[newargs optionForKey:@"si"]);
-			}
-			else if ([newargs containsArgument:@"disks"])
-			{
-				disks(esa,[newargs optionForKey:@"h"],[newargs optionForKey:@"si"]);	
-			} 
-			else if([newargs containsArgument:@"identify"]) 
-			{
-				if([dd Identify:proxy ESAID:esaid])
+				if ([newargs containsArgument:@"version"]) 
 				{
-					NSLog(@"Drobo %@ identified.",esaid);
+					esaVersion(esa);
 				}
-			}
-			else if([newargs containsArgument:@"standby"]) 
-			{
-				NSString *unmount;
-				[dd Standby:proxy ESAID:esaid dissentingVolume:&unmount];
-				NSLog(@"Dissenting Volume: %@",unmount);
-			}
-			else if([newargs containsArgument:@"restart"]) 
-			{
-				[dd Restart:proxy ESAID:esaid];
-			}
-			else if([newargs containsArgument:@"xpath"]) 
-			{
-				[esa xpath];
-			}
-
-			else if([newargs optionForKey:@"yellow"]) 
-
-			{
-				unsigned int pValue;
-				[dd GetOption_YellowThreshold:proxy ESAID:esaid threshold:&pValue];
-				if ([newargs hasOption:@"yellow"])
+				else if([newargs containsArgument:@"df"]) 
 				{
-					[dd SetOption_YellowThreshold:proxy ESAID:esaid threshold:[[newargs optionForKey:@"yellow"] intValue]];
-					printf ("Yellow Threshold old: %d new: %d\n",pValue, [[newargs optionForKey:@"yellow"] intValue]);
-				} else {
-					printf ("Yellow Threshold: %d\n",pValue);
+					df (esa,[newargs optionForKey:@"h"],[newargs optionForKey:@"si"]);
 				}
-			}
-			else if([newargs optionForKey:@"red"]) 
-
-			{
-				unsigned int pValue;
-				[dd GetOption_RedThreshold:proxy ESAID:esaid threshold:&pValue];
-				if ([newargs hasOption:@"red"])
+				else if ([newargs containsArgument:@"disks"])
 				{
-					[dd SetOption_RedThreshold:proxy ESAID:esaid threshold:[[newargs optionForKey:@"red"] intValue]];
-					printf ("Red Threshold old: %d new: %d\n",pValue, [[newargs optionForKey:@"red"] intValue]);
-				} else {
-					printf ("Red Threshold: %d\n",pValue);
+					disks(esa,[newargs optionForKey:@"h"],[newargs optionForKey:@"si"]);	
+				} 
+				else if([newargs containsArgument:@"identify"]) 
+				{
+					if([dd Identify:proxy ESAID:esaid])
+					{
+						NSLog(@"Drobo %@ identified.",esaid);
+					}
 				}
+				else if([newargs containsArgument:@"standby"]) 
+				{
+					NSString *unmount;
+					[dd Standby:proxy ESAID:esaid dissentingVolume:&unmount];
+					NSLog(@"Dissenting Volume: %@",unmount);
+				}
+				else if([newargs containsArgument:@"restart"]) 
+				{
+					[dd Restart:proxy ESAID:esaid];
+				}
+				else if([newargs containsArgument:@"xpath"]) 
+				{
+					[esa xpath];
+				}
+
+				else if([newargs optionForKey:@"yellow"]) 
+
+				{
+					unsigned int pValue;
+					[dd GetOption_YellowThreshold:proxy ESAID:esaid threshold:&pValue];
+					if ([newargs hasOption:@"yellow"])
+					{
+						[dd SetOption_YellowThreshold:proxy ESAID:esaid threshold:[[newargs optionForKey:@"yellow"] intValue]];
+						printf ("Yellow Threshold old: %d new: %d\n",pValue, [[newargs optionForKey:@"yellow"] intValue]);
+					} else {
+						printf ("Yellow Threshold: %d\n",pValue);
+					}
+				}
+				else if([newargs optionForKey:@"red"]) 
+
+				{
+					unsigned int pValue;
+					[dd GetOption_RedThreshold:proxy ESAID:esaid threshold:&pValue];
+					if ([newargs hasOption:@"red"])
+					{
+						[dd SetOption_RedThreshold:proxy ESAID:esaid threshold:[[newargs optionForKey:@"red"] intValue]];
+						printf ("Red Threshold old: %d new: %d\n",pValue, [[newargs optionForKey:@"red"] intValue]);
+					} else {
+						printf ("Red Threshold: %d\n",pValue);
+					}
+				}
+				else
+				{
+					printf ("Nothing to do. (try help --help)\n");
+				}
+					
+			} else {
+				NSLog(@"Cannot find drobo ID: %@",esaid);
 			}
-			else
-			{
-				printf ("Nothing to do. (try help --help)\n");
-			}
-				
-} else {
-	NSLog(@"Cannot find drobo ID: %@",esaid);
-}
 		
-            [dd unregisterESAEventListener:proxy];
-            [dd TMExit:proxy];
+			[dd unregisterESAEventListener:proxy];
+			[dd TMExit:proxy];
 				
 		} else {
 			NSLog(@"No Drobos Detected.");
@@ -315,6 +320,7 @@ int main(int argc, char *argv[])
 			NSLog(@"An exception occured: name: %@ reason: %@ user: %@",[e name],[e reason],[e userInfo]);
 		}
 	}
+
 	[pool release];
 	return 0;
 }
