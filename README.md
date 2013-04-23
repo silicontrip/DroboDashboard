@@ -3,6 +3,8 @@ DroboDashboard
 
 Command line tools to communicate with the DDService Daemon for monitoring a directly connected Drobo
 
+This version only works with Drobo Dashboard 1. Not Drobo Dashboard 2.
+
     Drobo dashboard Utility
     Utility to manage connected Drobos
     Usage: dash <command> [options]
