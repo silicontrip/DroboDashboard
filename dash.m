@@ -91,6 +91,42 @@ const char *humanString ( long long number, NSNumber *human, NSNumber *si)
 	}
 }
 
+time_t timeOfChange(NSDistantObject *proxy, DDServer *dd)
+{
+    ESATMUpdate *esa = getNextESAEvent(dd,proxy);
+    int relayout = [esa getRelayoutCount];
+    while ([esa getRelayoutCount] == relayout && relayout != 0)
+    {
+        printf ("Rebuild remaining: %d\n",[esa getRelayoutCount]);
+        sleep (1);
+        esa = getNextESAEvent(dd,proxy);
+    }
+
+    return time(NULL);
+}
+
+void rebuildProgress(NSDistantObject *proxy, DDServer *dd,NSNumber *repeats)
+{
+    time_t s1;
+    time_t s2;
+    
+    ESATMUpdate *esa;
+    
+    s1 = timeOfChange(proxy,dd);
+    
+    do {
+        s2=timeOfChange(proxy,dd);
+
+        esa = getNextESAEvent(dd,proxy);
+
+        time_t spc = s2 - s1;
+        printf ("seconds per stripe: %ld\n",spc);
+        printf ("seconds remain: %ld\n", [esa getRelayoutCount] * spc );
+        s1=s2;
+        
+    } while ([repeats boolValue] && [esa getRelayoutCount]!=0 );
+   
+}
 void disks (ESATMUpdate *esa, NSNumber *human, NSNumber *si)
 {
 	int disks = [esa getSlotCountExp];
@@ -303,6 +339,10 @@ int main(int argc, char *argv[])
 					printf ("Red Threshold: %d\n",pValue);
 				}
 			}
+            else if ([newargs containsArgument:@"rebuildProgress"])
+            {
+                rebuildProgress(proxy,dd,[newargs optionForKey:@"r"]);
+            }
 			else
 			{
 				printf ("Nothing to do. (try help --help)\n");
