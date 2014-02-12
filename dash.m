@@ -115,6 +115,8 @@ void rebuildProgress(NSDistantObject *proxy, DDServer *dd,NSNumber *repeats)
     
     ESATMUpdate *esa;
     
+    int count = 1;
+    
     printf ("Please Wait...\n");
     
     s1 = timeOfChange(proxy,dd);
@@ -125,14 +127,12 @@ void rebuildProgress(NSDistantObject *proxy, DDServer *dd,NSNumber *repeats)
         initESAEvent(dd,proxy);
         esa = getNextESAEvent(dd,proxy);
 
-        time_t spc = s2 - s1;
+        time_t spc = (s2 - s1) / count;
         time_t remain = [esa getRelayoutCount] * spc;
         time_t complete = remain + s2;
         
-        printf ("seconds per stripe: %ld        eta: %s\n", spc, ctime(&complete) );
-        
-        s1=s2;
-        
+        printf ("seconds per stripe: %3ld        eta: %s", spc, ctime(&complete) );
+        count++;
     } while ([repeats boolValue] && [esa getRelayoutCount]!=0 );
    
 }
