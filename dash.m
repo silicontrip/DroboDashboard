@@ -93,6 +93,7 @@ const char *humanString ( long long number, NSNumber *human, NSNumber *si)
 
 time_t timeOfChange(NSDistantObject *proxy, DDServer *dd)
 {
+    initESAEvent(dd,proxy);
     ESATMUpdate *esa = getNextESAEvent(dd,proxy);
 
     printf ("Rebuild remaining: %d\n",[esa getRelayoutCount]);
@@ -102,6 +103,7 @@ time_t timeOfChange(NSDistantObject *proxy, DDServer *dd)
     {
         printf ("Rebuild remaining: %d\n",[esa getRelayoutCount]);
         sleep (1);
+        initESAEvent(dd,proxy);
         esa = getNextESAEvent(dd,proxy);
     }
 
@@ -120,6 +122,7 @@ void rebuildProgress(NSDistantObject *proxy, DDServer *dd,NSNumber *repeats)
     do {
         s2=timeOfChange(proxy,dd);
 
+        initESAEvent(dd,proxy);
         esa = getNextESAEvent(dd,proxy);
 
         time_t spc = s2 - s1;
@@ -175,6 +178,7 @@ void usage() {
 	printf("identify\tFlash all leds red-green for identification\n");
 	printf("standby\t\tpowerdown drobo.\n");
 	printf("restart\t\trestart drobo.\n");
+    printf("rebuildProgress [-r] give estimate of rebuild time [-r repeats]\n");
 	printf("--red [threshold]\tDisplay or set the red threshold.\n");
 	printf("--yellow [threshold]\tDisplay or set the yellow threshold.\n");
 	printf("\nOPTIONS:\n");
