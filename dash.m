@@ -94,6 +94,9 @@ const char *humanString ( long long number, NSNumber *human, NSNumber *si)
 time_t timeOfChange(NSDistantObject *proxy, DDServer *dd)
 {
     ESATMUpdate *esa = getNextESAEvent(dd,proxy);
+
+    printf ("Rebuild remaining: %d\n",[esa getRelayoutCount]);
+
     int relayout = [esa getRelayoutCount];
     while ([esa getRelayoutCount] == relayout && relayout != 0)
     {
