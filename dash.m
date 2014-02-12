@@ -96,12 +96,12 @@ time_t timeOfChange(NSDistantObject *proxy, DDServer *dd)
     initESAEvent(dd,proxy);
     ESATMUpdate *esa = getNextESAEvent(dd,proxy);
 
-    printf ("Rebuild remaining: %d\n",[esa getRelayoutCount]);
+    // printf ("Rebuild remaining: %d\n",[esa getRelayoutCount]);
 
     int relayout = [esa getRelayoutCount];
     while ([esa getRelayoutCount] == relayout && relayout != 0)
     {
-        printf ("Rebuild remaining: %d\n",[esa getRelayoutCount]);
+        // printf ("Rebuild remaining: %d\n",[esa getRelayoutCount]);
         sleep (1);
         initESAEvent(dd,proxy);
         esa = getNextESAEvent(dd,proxy);
@@ -116,6 +116,8 @@ void rebuildProgress(NSDistantObject *proxy, DDServer *dd,NSNumber *repeats)
     time_t s2;
     
     ESATMUpdate *esa;
+    
+    printf ("Please Wait...\n");
     
     s1 = timeOfChange(proxy,dd);
     
